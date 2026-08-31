@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# تنسيق CSS مخصص مستوحى من ألوان صبار التين الشوكي وثماره (أخضر صباري ووردي ثمري)
+# تنسيق CSS مخصص للواجهة والهوية البصرية
 st.markdown("""
 <style>
     .main-header {
@@ -38,11 +38,11 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# واجهة الهيدر البصرية المستوحاة من صورة التين الشوكي
+# واجهة الهيدر البصرية مع النص المطلوب تماماً
 st.markdown("""
 <div class="main-header">
     <h1>🌵 AgriOpuntia</h1>
-    <p>المنصة الذكية لتطبيق الهيدروجيل الحيوي المستخلص من التين الشوكي وحساب التسميد الدقيق</p>
+    <p>المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -299,6 +299,7 @@ else:
     - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone
     - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake
     """)
+
 
 
 
