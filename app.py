@@ -7,12 +7,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# تنسيق CSS مخصص للواجهة مع هوية بصرية متناسقة
+# تنسيق CSS مخصص للواجهة مع هوية بصرية متناسقة (أخضر طبيعي، أبيض، ولمسات ترابية دافئة)
 st.markdown("""
 <style>
     .main-header {
         background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
-        padding: 30px;
+        padding: 35px;
         border-radius: 16px;
         color: white;
         text-align: center;
@@ -23,7 +23,7 @@ st.markdown("""
     .main-header h1 {
         color: white !important;
         font-size: 2.7rem;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         font-weight: 700;
     }
     .main-header p {
@@ -38,24 +38,19 @@ st.markdown("""
         border-top: 1px solid #e3dec3;
         box-shadow: 0 3px 8px rgba(0,0,0,0.04);
     }
+    .stSidebar {
+        background-color: #faf9f5;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # واجهة الهيدر البصرية
 st.markdown("""
 <div class="main-header">
-    <h1>AgriOpuntia</h1>
+    <h1>🌵 AgriOpuntia</h1>
     <p>المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد</p>
 </div>
 """, unsafe_allow_html=True)
-
-# عرض صورة حقل التين الشوكي مباشرة
-try:
-    st.image("2237.jpg", caption="حقل التين الشوكي (Opuntia ficus-indica) - المصدر الحيوي للهيدروجيل", use_container_width=True)
-except Exception:
-    st.image("2237.JPG", caption="حقل التين الشوكي (Opuntia ficus-indica) - المصدر الحيوي للهيدروجيل", use_container_width=True)
-
-st.markdown("---")
 
 # القائمة الجانبية للإعدادات واللغة
 st.sidebar.title("⚙️ إعدادات الحقل والمزرعة / Farm Settings")
@@ -318,6 +313,8 @@ else:
     - Hydrogel Depth: Apply hydrogel at a depth of 20 to 30 cm within the active root zone
     - Fertilization Advice: Split the fertilizer amount into multiple doses throughout the growing season
     """)
+
+
 
 
 
