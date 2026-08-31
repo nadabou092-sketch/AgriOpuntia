@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# القائمة الجانبية للإعدادات واللغة (ثلاث لغات: العربية، الفرنسية، الإنجليزية)
+# القائمة الجانبية للإعدادات واللغة
 st.sidebar.title("⚙️ إعدادات الحقل والمزرعة / Farm Settings")
 lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"])
 
@@ -49,30 +49,38 @@ if lang == "العربية":
     with col1:
         st.info("🌵 دور الهيدروجيل الحيوي")
         with st.expander("اضغط لعرض تفاصيل التقنية"):
-            st.write("""
-            - **المصدر:** مستخلص طبيعي من ألواح صبار التين الشوكي (*Opuntia ficus-indica*)
-            - **الوظيفة الحقلية:** يشكل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً
-            """)
+            st.markdown("""
+            <div dir="rtl" style="text-align: right;">
+            - <b>المصدر:</b> مستخلص طبيعي من ألواح صبار التين الشوكي (<i>Opuntia ficus-indica</i>)<br>
+            - <b>الوظيفة الحقلية:</b> يشكل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً
+            </div>
+            """, unsafe_allow_html=True)
         
     with col2:
         st.info(f"🌿 تخصيص المحصول ({crop_type.split()[0]})")
         with st.expander("اضغط لعرض تفاصيل الاحتياجات"):
-            st.write(f"""
-            - **المحصول:** {crop_type}
-            - **طبيعة التربة:** {soil_type}
-            - **التسميد المحسوب:** يحتاج الحقل إجمالاً إلى **{total_crop_fertilizer_kg:.1f} كغ** من الأسمدة لتغطية احتياجات المساحة المدروسة
-            """)
+            st.markdown(f"""
+            <div dir="rtl" style="text-align: right;">
+            - <b>المحصول:</b> {crop_type}<br>
+            - <b>طبيعة التربة:</b> {soil_type}<br>
+            - <b>التسميد المحسوب:</b> يحتاج الحقل إجمالاً إلى <b>{total_crop_fertilizer_kg:.1f} كغ</b> من الأسمدة لتغطية احتياجات المساحة المدروسة
+            </div>
+            """, unsafe_allow_html=True)
         
     with col3:
         st.info("💧 كفاءة الري والتوفير")
         with st.expander("اضغط لعرض أثر توفير المياه"):
-            st.write("""
-            - **نسبة توفير المياه:** تقليص عدد مرات السقي بنسبة تصل إلى 40%
-            - **مقاومة الجفاف:** حماية المحاصيل من صدمات الإجهاد المائي في الأوقات الحارة
-            """)
+            st.markdown("""
+            <div dir="rtl" style="text-align: right;">
+            - <b>نسبة توفير المياه:</b> تقليص عدد مرات السقي بنسبة تصل إلى 40%<br>
+            - <b>مقاومة الجفاف:</b> حماية المحاصيل من صدمات الإجهاد المائي في الأوقات الحارة
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.header(f"📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type.split()[0]}")
+    st.markdown(f"""
+    <h2 style="direction: rtl; text-align: right;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
+    """, unsafe_allow_html=True)
 
     mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("الهيدروجيل المقترح", f"{hydrogel_needed_kg:.1f} كغ")
@@ -81,13 +89,17 @@ if lang == "العربية":
 
     st.markdown("---")
     st.subheader("📑 الملخص التقني والفلاحي للمزرعة")
-    st.write(f"- **المساحة الكلية المستهدفة:** {area:,.0f} متر مربع")
-    st.write(f"- **نوع التربة المحددة من التحاليل:** {soil_type}")
-    st.write(f"- **الاحتياج الإجمالي من الهيدروجيل الحيوي:** {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور")
-    st.write(f"- **الاحتياج الإجمالي من الأسمدة:** {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول")
+    st.markdown(f"""
+    <div dir="rtl" style="text-align: right;">
+    - <b>المساحة الكلية المستهدفة:</b> {area:,.0f} متر مربع<br>
+    - <b>نوع التربة المحددة من التحاليل:</b> {soil_type}<br>
+    - <b>الاحتياج الإجمالي من الهيدروجيل الحيوي:</b> {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور<br>
+    - <b>الاحتياج الإجمالي من الأسمدة:</b> {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="background-color: #d1e7dd; padding: 15px; border-radius: 8px; border-right: 5px solid #0f5132; direction: rtl; text-align: right; color: #0f5132;">
+    <div style="background-color: #d1e7dd; padding: 15px; border-radius: 8px; border-right: 5px solid #0f5132; direction: rtl; text-align: right; color: #0f5132; margin-top: 15px;">
         <b>💡 إرشادات وتوصيات تطبيقية ميدانية:</b>
         <ul style="margin-top: 10px; padding-right: 20px;">
             <li><b>عمق تطبيق الهيدروجيل:</b> يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة)</li>
@@ -157,7 +169,7 @@ elif lang == "Français":
             """)
 
     st.markdown("---")
-    st.header(f"📊 Tableau de bord pour : {crop_type.split()[0]}")
+    st.header(f"📊 Tableau de bord pour : {crop_type}")
 
     mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("Hydrogel suggéré", f"{hydrogel_needed_kg:.1f} kg")
@@ -238,7 +250,7 @@ else:
             """)
 
     st.markdown("---")
-    st.header(f"📊 Agricultural Dashboard for: {crop_type.split()[0]}")
+    st.header(f"📊 Agricultural Dashboard for: {crop_type}")
 
     mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:.1f} kg")
@@ -257,6 +269,7 @@ else:
     - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone
     - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake
     """)
+
 
 
 
