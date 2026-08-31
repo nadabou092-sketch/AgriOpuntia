@@ -50,25 +50,25 @@ if lang == "العربية":
         st.info("🌵 دور الهيدروجيل الحيوي")
         with st.expander("اضغط لعرض تفاصيل التقنية"):
             st.write("""
-            - **المصدر:** مستخلص طبيعي من ألواح صبار التين الشوكي (*Opuntia ficus-indica*).
-            - **الوظيفة الحقلية:** يشكل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً.
+            - **المصدر:** مستخلص طبيعي من ألواح صبار التين الشوكي (*Opuntia ficus-indica*)
+            - **الوظيفة الحقلية:** يشكل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً
             """)
         
     with col2:
         st.info(f"🌿 تخصيص المحصول ({crop_type.split()[0]})")
         with st.expander("اضغط لعرض تفاصيل الاحتياجات"):
             st.write(f"""
-            - **المحصول:** {crop_type}.
-            - **طبيعة التربة:** {soil_type}.
-            - **التسميد المحسوب:** يحتاج الحقل إجمالاً إلى **{total_crop_fertilizer_kg:.1f} كغ** من الأسمدة لتغطية احتياجات المساحة المدروسة.
+            - **المحصول:** {crop_type}
+            - **طبيعة التربة:** {soil_type}
+            - **التسميد المحسوب:** يحتاج الحقل إجمالاً إلى **{total_crop_fertilizer_kg:.1f} كغ** من الأسمدة لتغطية احتياجات المساحة المدروسة
             """)
         
     with col3:
         st.info("💧 كفاءة الري والتوفير")
         with st.expander("اضغط لعرض أثر توفير المياه"):
             st.write("""
-            - **نسبة توفير المياه:** تقليص عدد مرات السقي بنسبة تصل إلى 40%.
-            - **مقاومة الجفاف:** حماية المحاصيل من صدمات الإجهاد المائي في الأوقات الحارة.
+            - **نسبة توفير المياه:** تقليص عدد مرات السقي بنسبة تصل إلى 40%
+            - **مقاومة الجفاف:** حماية المحاصيل من صدمات الإجهاد المائي في الأوقات الحارة
             """)
 
     st.markdown("---")
@@ -81,17 +81,21 @@ if lang == "العربية":
 
     st.markdown("---")
     st.subheader("📑 الملخص التقني والفلاحي للمزرعة")
-    st.write(f"- **المساحة الكلية المستهدفة:** {area:,.0f} متر مربع.")
-    st.write(f"- **نوع التربة المحددة من التحاليل:** {soil_type}.")
-    st.write(f"- **الاحتياج الإجمالي من الهيدروجيل الحيوي:** {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور.")
-    st.write(f"- **الاحتياج الإجمالي من الأسمدة:** {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول.")
+    st.write(f"- **المساحة الكلية المستهدفة:** {area:,.0f} متر مربع")
+    st.write(f"- **نوع التربة المحددة من التحاليل:** {soil_type}")
+    st.write(f"- **الاحتياج الإجمالي من الهيدروجيل الحيوي:** {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور")
+    st.write(f"- **الاحتياج الإجمالي من الأسمدة:** {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول")
     
-    # تنسيق كل نصيحة في سطر واحد منظم
-    st.success("""
-    💡 **إرشادات وتوصيات تطبيقية ميدانية:**
-    - **عمق تطبيق الهيدروجيل:** يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة).
-    - **نصائح التسميد:** يُفضل تقسيم كمية الأسمدة المحسوبة على دفعات طوال الموسم الزراعي لتعزيز كفاءة الامتصاص وتقليل الضياع.
-    """)
+    # إزالة النقاط من نهاية الجمل في التوصيات
+    st.markdown("""
+    <div style="background-color: #d1e7dd; padding: 15px; border-radius: 8px; border-right: 5px solid #0f5132; direction: rtl; text-align: right; color: #0f5132;">
+        <b>💡 إرشادات وتوصيات تطبيقية ميدانية:</b>
+        <ul style="margin-top: 10px; padding-right: 20px;">
+            <li><b>عمق تطبيق الهيدروجيل:</b> يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة)</li>
+            <li><b>نصائح التسميد:</b> يُفضل تقسيم كمية الأسمدة المحسوبة على دفعات طوال الموسم الزراعي لتعزيز كفاءة الامتصاص وتقليل الضياع</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif lang == "Français":
     st.title("🌵 AgriOpuntia")
@@ -132,25 +136,25 @@ elif lang == "Français":
         st.info("🌵 Rôle du bio-hydrogel")
         with st.expander("Afficher les détails"):
             st.write("""
-            - **Source :** Extrait naturel de cladodes de figuier de Barbarie.
-            - **Fonction :** Crée un réseau gélatineux autour des racines pour retenir l'eau et les nutriments.
+            - **Source :** Extrait naturel de cladodes de figuier de Barbarie
+            - **Fonction :** Crée un réseau gélatineux autour des racines pour retenir l'eau et les nutriments
             """)
         
     with col2:
         st.info(f"🌿 Culture ({crop_type.split()[0]})")
         with st.expander("Afficher les détails"):
             st.write(f"""
-            - **Culture :** {crop_type}.
-            - **Sol :** {soil_type}.
-            - **Fertilisant total :** **{total_crop_fertilizer_kg:.1f} kg** requis pour la surface.
+            - **Culture :** {crop_type}
+            - **Sol :** {soil_type}
+            - **Fertilisant total :** **{total_crop_fertilizer_kg:.1f} kg** requis pour la surface
             """)
         
     with col3:
         st.info("💧 Économie d'eau")
         with st.expander("Afficher l'impact"):
             st.write("""
-            - **Économie :** Réduction de l'irrigation jusqu'à 40%.
-            - **Résistance :** Protection contre le stress hydrique.
+            - **Économie :** Réduction de l'irrigation jusqu'à 40%
+            - **Résistance :** Protection contre le stress hydrique
             """)
 
     st.markdown("---")
@@ -163,15 +167,15 @@ elif lang == "Français":
 
     st.markdown("---")
     st.subheader("📑 Résumé technique")
-    st.write(f"- **Superficie ciblée :** {area:,.0f} m².")
-    st.write(f"- **Type de sol :** {soil_type}.")
-    st.write(f"- **Besoin total en bio-hydrogel :** {hydrogel_needed_kg:.1f} kg.")
-    st.write(f"- **Besoin total en engrais :** {total_crop_fertilizer_kg:.1f} kg.")
+    st.write(f"- **Superficie ciblée :** {area:,.0f} m²")
+    st.write(f"- **Type de sol :** {soil_type}")
+    st.write(f"- **Besoin total en bio-hydrogel :** {hydrogel_needed_kg:.1f} kg")
+    st.write(f"- **Besoin total en engrais :** {total_crop_fertilizer_kg:.1f} kg")
     
     st.success("""
     💡 **Conseils et recommandations pratiques :**
-    - **Profondeur de l'hydrogel :** Il est recommandé de placer l'hydrogel à une profondeur de 20 à 30 cm sous la surface (zone active des racines).
-    - **Conseils de fertilisation :** Il est conseillé de fractionner la quantité d'engrais tout au long de la saison pour optimiser l'absorption.
+    - **Profondeur de l'hydrogel :** Il est recommandé de placer l'hydrogel à une profondeur de 20 à 30 cm sous la surface (zone active des racines)
+    - **Conseils de fertilisation :** Il est conseillé de fractionner la quantité d'engrais tout au long de la saison pour optimiser l'absorption
     """)
 
 else:
@@ -213,25 +217,25 @@ else:
         st.info("🌵 Bio-Hydrogel Role")
         with st.expander("View Details"):
             st.write("""
-            - **Source:** Natural extract from cactus cladodes (*Opuntia ficus-indica*).
-            - **Function:** Creates a microscopic gel network around roots to retain water and nutrients.
+            - **Source:** Natural extract from cactus cladodes (*Opuntia ficus-indica*)
+            - **Function:** Creates a microscopic gel network around roots to retain water and nutrients
             """)
         
     with col2:
         st.info(f"🌿 Crop Customization ({crop_type.split()[0]})")
         with st.expander("View Details"):
             st.write(f"""
-            - **Crop:** {crop_type}.
-            - **Soil:** {soil_type}.
-            - **Calculated Fertilizer:** Total of **{total_crop_fertilizer_kg:.1f} kg** needed for the area.
+            - **Crop:** {crop_type}
+            - **Soil:** {soil_type}
+            - **Calculated Fertilizer:** Total of **{total_crop_fertilizer_kg:.1f} kg** needed for the area
             """)
         
     with col3:
         st.info("💧 Water Efficiency")
         with st.expander("View Impact"):
             st.write("""
-            - **Water Saving:** Cuts irrigation frequency by up to 40%.
-            - **Drought Resilience:** Protects crops from water stress shocks.
+            - **Water Saving:** Cuts irrigation frequency by up to 40%
+            - **Drought Resilience:** Protects crops from water stress shocks
             """)
 
     st.markdown("---")
@@ -244,16 +248,17 @@ else:
 
     st.markdown("---")
     st.subheader("📑 Technical & Agronomic Summary")
-    st.write(f"- **Target Area:** {area:,.0f} m².")
-    st.write(f"- **Soil Type:** {soil_type}.")
-    st.write(f"- **Total Bio-Hydrogel Requirement:** {hydrogel_needed_kg:.1f} kg.")
-    st.write(f"- **Total Fertilizer Requirement:** {total_crop_fertilizer_kg:.1f} kg.")
+    st.write(f"- **Target Area:** {area:,.0f} m²")
+    st.write(f"- **Soil Type:** {soil_type}")
+    st.write(f"- **Total Bio-Hydrogel Requirement:** {hydrogel_needed_kg:.1f} kg")
+    st.write(f"- **Total Fertilizer Requirement:** {total_crop_fertilizer_kg:.1f} kg")
     
     st.success("""
     💡 **Practical Field Guidelines & Recommendations:**
-    - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone.
-    - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake.
+    - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone
+    - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake
     """)
+
 
 
 
