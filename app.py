@@ -7,33 +7,39 @@ st.set_page_config(
     layout="wide"
 )
 
-# تنسيق CSS مخصص للواجهة والهوية البصرية
+# تنسيق CSS مخصص للواجهة مع هوية بصرية متناسقة (أخضر طبيعي، أبيض، ولمسات ترابية دافئة)
 st.markdown("""
 <style>
     .main-header {
-        background: linear-gradient(135deg, #2d5a27 0%, #3b7a57 50%, #88b04b 100%);
-        padding: 30px;
-        border-radius: 15px;
+        background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
+        padding: 35px;
+        border-radius: 16px;
         color: white;
         text-align: center;
         margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(27, 77, 62, 0.15);
+        border-bottom: 4px solid #d4a373;
     }
     .main-header h1 {
         color: white !important;
-        font-size: 2.5rem;
+        font-size: 2.7rem;
         margin-bottom: 10px;
+        font-weight: 700;
     }
     .main-header p {
-        color: #f8f9fa !important;
-        font-size: 1.2rem;
+        color: #f4f1ea !important;
+        font-size: 1.25rem;
     }
     .stMetric {
-        background-color: #f4f9f4;
-        padding: 15px;
-        border-radius: 10px;
-        border-right: 4px solid #2d5a27;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        background-color: #f7f4ee;
+        padding: 18px;
+        border-radius: 12px;
+        border-right: 5px solid #2e6f40;
+        border-top: 1px solid #e3dec3;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+    .stSidebar {
+        background-color: #faf9f5;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -89,7 +95,7 @@ if lang == "العربية":
             <div dir="rtl" style="text-align: right; line-height: 1.8;">
             <b>• المصدر الطبيعي:</b><br>
             مستخلص من ألواح صبار التين الشوكي<br>
-            <span dir="ltr" style="display: inline-block; color: #1b5e20; font-weight: bold;">(Opuntia ficus-indica)</span><br><br>
+            <span dir="ltr" style="display: inline-block; color: #2e6f40; font-weight: bold;">(Opuntia ficus-indica)</span><br><br>
             <b>• الوظيفة الحقلية:</b><br>
             تشكيل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً
             </div>
@@ -123,7 +129,7 @@ if lang == "العربية":
 
     st.markdown("---")
     st.markdown(f"""
-    <h2 style="direction: rtl; text-align: right; color: #2d5a27;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
+    <h2 style="direction: rtl; text-align: right; color: #1b4d3e;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
     """, unsafe_allow_html=True)
 
     mcol1, mcol2, mcol3 = st.columns(3)
@@ -143,7 +149,7 @@ if lang == "العربية":
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; border-right: 5px solid #2d5a27; direction: rtl; text-align: right; color: #1b5e20; margin-top: 15px;">
+    <div style="background-color: #f7f4ee; padding: 18px; border-radius: 10px; border-right: 5px solid #d4a373; direction: rtl; text-align: right; color: #2c4c3b; margin-top: 15px;">
         <b>💡 إرشادات وتوصيات تطبيقية ميدانية:</b>
         <ul style="margin-top: 10px; padding-right: 20px; line-height: 1.8;">
             <li><b>عمق تطبيق الهيدروجيل:</b> يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة)</li>
@@ -307,6 +313,8 @@ else:
     - Hydrogel Depth: Apply hydrogel at a depth of 20 to 30 cm within the active root zone
     - Fertilization Advice: Split the fertilizer amount into multiple doses throughout the growing season
     """)
+
+
 
 
 
