@@ -16,10 +16,10 @@ if lang == "العربية":
     st.subheader("المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد")
     
     crop_type = st.sidebar.selectbox("اختر المحصول الزراعي:", [
-        "أشجار الزيتون (المناطق السهبية والشمالية)", 
-        "نخيل التمر (المنطقة الجنوبية والولايات الواحية)", 
-        "الحبوب (القمح والشعير - مناطق الهضاب العليا والسهوب)", 
-        "الحمضيات (البرتقال والليمون - الشلف والسهل الساحلي)", 
+        "أشجار الزيتون", 
+        "نخيل التمر", 
+        "الحبوب (القمح والشعير)", 
+        "الحمضيات (البرتقال والليمون)", 
         "البقوليات الجافة (الفول، الحمص، الجلبانة)", 
         "الخضروات تحت السقي الموضعي (الطماطم، البطاطا)"
     ])
@@ -86,7 +86,6 @@ if lang == "العربية":
     st.write(f"- **الاحتياج الإجمالي من الهيدروجيل الحيوي:** {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور")
     st.write(f"- **الاحتياج الإجمالي من الأسمدة:** {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول")
     
-    # إزالة النقاط من نهاية الجمل في التوصيات
     st.markdown("""
     <div style="background-color: #d1e7dd; padding: 15px; border-radius: 8px; border-right: 5px solid #0f5132; direction: rtl; text-align: right; color: #0f5132;">
         <b>💡 إرشادات وتوصيات تطبيقية ميدانية:</b>
@@ -102,11 +101,11 @@ elif lang == "Français":
     st.subheader("Plateforme intelligente d'application de bio-hydrogel et de calcul de fertilisation")
     
     crop_type = st.sidebar.selectbox("Sélectionner la culture :", [
-        "Olivier (Régions steppiques et du Nord)", 
-        "Palmier dattier (Régions du Sud et oasiennes)", 
-        "Céréales (Blé et Orge - Hauts Plateaux et Steppes)", 
-        "Agrumes (Oranges et Citrons - Chlef et Littoral)", 
-        "Légumineuses sèches (Fèves, Pois chiches, Petits pois)", 
+        "Olivier", 
+        "Palmier dattier", 
+        "Céréales (Blé et Orge)", 
+        "Agrumes (Oranges et Citrons)", 
+        "Légumineuses sèches (Fèves, Pois chiches)", 
         "Légumes sous irrigation localisée (Tomates, Pommes de terre)"
     ])
     
@@ -183,11 +182,11 @@ else:
     st.subheader("Smart Platform for Bio-Hydrogel Application & Fertilization Calculation")
     
     crop_type = st.sidebar.selectbox("Select Crop Type:", [
-        "Olive Trees (Steppe and Northern Regions)", 
-        "Date Palm Trees (Southern and Oasis Regions)", 
-        "Cereals (Wheat and Barley - High Plateaus and Steppes)", 
-        "Citrus (Oranges and Lemons - Chlef and Coastal Plains)", 
-        "Dry Legumes (Fava beans, Chickpeas, Peas)", 
+        "Olive Trees", 
+        "Date Palm Trees", 
+        "Cereals (Wheat and Barley)", 
+        "Citrus (Oranges and Lemons)", 
+        "Dry Legumes (Fava beans, Chickpeas)", 
         "Vegetables under Localized Irrigation (Tomatoes, Potatoes)"
     ])
     
@@ -258,6 +257,7 @@ else:
     - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone
     - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake
     """)
+
 
 
 
