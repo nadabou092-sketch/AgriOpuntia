@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# تنسيق CSS مخصص للواجهة مع دعم الاتجاهات (RTL / LTR)
+# تنسيق CSS مخصص للواجهة والجدول لتجنب أي تداخل
 st.markdown("""
 <style>
     .main-header {
@@ -37,6 +37,33 @@ st.markdown("""
         border-radius: 12px;
         border-top: 1px solid #e3dec3;
         box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        direction: rtl;
+        text-align: right;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .custom-table th {
+        background-color: #1b4d3e;
+        color: white;
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    .custom-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e0e0e0;
+        color: #333333;
+        font-size: 0.95rem;
+    }
+    .custom-table tr:hover {
+        background-color: #f7f4ee;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -144,13 +171,40 @@ if lang == "العربية":
         st.success("🌱 **توصية للمناخ الساحلي/المعتدل:** الرطوبة النسبية مساعدة، والهيدروجيل سيمنع غسل العناصر الغذائية نحو الأسفل بسبب مياه الأمطار الزائدة.")
 
     st.markdown("---")
-    st.subheader("📅 الجدول الزمني المقترح لسقي ومتابعة المحصول")
-    timeline_data = pd.DataFrame({
-        "مرحلة نمو المحصول (Crop Stage)": ["مرحلة الغرس / البداية", "مرحلة النمو الخضري", "مرحلة الإزهار والعقد", "مرحلة النضج والجني"],
-        "تأثير الهيدروجيل الحيوي (Bio-Hydrogel Effect)": ["حماية الجذور الفتية وتثبيت الرطوبة الأولية", "إمداد متواصل ومستقر بالمياه والأسمدة", "الحماية من صدمات العطش والإجهاد الحراري", "تقليل تدريجي للرطوبة لتحسين جودة المحصول"],
-        "تواتر الري (Irrigation Interval)": ["عادي مع تقليل الفترات بـ 20%", "تخفيض الفترات بـ 40%", "تخفيض الفترات بـ 35%", "ري خفيف عند الضرورة"]
-    })
-    st.table(timeline_data)
+    st.markdown("""
+    <h3 style="direction: rtl; text-align: right; color: #1b4d3e;">📅 الجدول الزمني المقترح لسقي ومتابعة المحصول</h3>
+    """, unsafe_allow_html=True)
+    
+    # جدول HTML منظم ومنعزل تماماً ضد التداخل
+    st.markdown("""
+    <table class="custom-table">
+        <tr>
+            <th>مرحلة نمو المحصول</th>
+            <th>تأثير الهيدروجيل الحيوي</th>
+            <th>تواتر الري الموصى به</th>
+        </tr>
+        <tr>
+            <td><b>مرحلة الغرس / البداية</b></td>
+            <td>حماية الجذور الفتية وتثبيت الرطوبة الأولية</td>
+            <td>عادي مع تقليل الفترات بـ 20%</td>
+        </tr>
+        <tr>
+            <td><b>مرحلة النمو الخضري</b></td>
+            <td>إمداد متواصل ومستقر بالمياه والأسمدة</td>
+            <td>تخفيض الفترات بـ 40%</td>
+        </tr>
+        <tr>
+            <td><b>مرحلة الإزهار والعقد</b></td>
+            <td>الحماية من صدمات العطش والإجهاد الحراري</td>
+            <td>تخفيض الفترات بـ 35%</td>
+        </tr>
+        <tr>
+            <td><b>مرحلة النضج والجني</b></td>
+            <td>تقليل تدريجي للرطوبة لتحسين جودة المحصول</td>
+            <td>ري خفيف عند الضرورة</td>
+        </tr>
+    </table>
+    """, unsafe_allow_html=True)
 
     st.markdown("---")
     st.subheader("📑 الملخص التقني والفلاحي للمزرعة وتحميل التقرير")
@@ -164,7 +218,6 @@ if lang == "العربية":
     </div>
     """, unsafe_allow_html=True)
     
-    # زر تحميل التقرير كملف نصي CSV/TXT
     report_content = f"""AgriOpuntia Technical Report
 ------------------------------------
 Crop Type: {crop_type}
@@ -186,235 +239,72 @@ Generated via AgriOpuntia Smart Platform.
 
 elif lang == "Français":
     crop_type = st.sidebar.selectbox("Sélectionner la culture :", [
-        "Olivier", 
-        "Palmier dattier", 
-        "Céréales (Blé et Orge)", 
-        "Agrumes (Oranges et Citrons)", 
-        "Légumineuses sèches (Fèves, Pois chiches)", 
-        "Légumes sous irrigation localisée (Tomates, Pommes de terre)"
+        "Olivier", "Palmier dattier", "Céréales (Blé et Orge)", "Agrumes", "Légumineuses sèches", "Légumes"
     ])
-    
-    soil_type = st.sidebar.selectbox("Type de sol (selon l'analyse de laboratoire) :", [
-        "Sol sableux (Sandy)",
-        "Sol limoneux (Loamy / Silt Loam)",
-        "Sol argileux lourd (Clay)",
-        "Sol sablo-argileux (Sandy Clay Loam)",
-        "Sol limo-argileux (Silty Clay Loam)"
+    soil_type = st.sidebar.selectbox("Type de sol :", [
+        "Sol sableux (Sandy)", "Sol limoneux", "Sol argileux lourd", "Sol sablo-argileux", "Sol limo-argileux"
     ])
-    
-    climate_zone = st.sidebar.selectbox("Zone climatique de l'exploitation :", [
-        "Climat semi-aride / aride (Chaud en été)",
-        "Climat saharien très aride (Chaleur extrême, faible pluviosité)",
-        "Climat côtier / tempéré (Humidité relative, tempéré)"
+    climate_zone = st.sidebar.selectbox("Zone climatique :", [
+        "Climat semi-aride / aride", "Climat saharien très aride", "Climat côtier / tempéré"
     ])
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("📊 Paramètres de superficie et besoins")
-    area = st.sidebar.number_input("Superficie du champ ciblé (en m²) :", min_value=100, value=5000, step=500)
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("🌿 Programme de fertilisation")
-    fertilizer_rate = st.sidebar.number_input("Taux d'engrais recommandé par m² (kg/m²) :", min_value=0.01, value=0.12, step=0.01)
+    area = st.sidebar.number_input("Superficie (m²) :", min_value=100, value=5000, step=500)
+    fertilizer_rate = st.sidebar.number_input("Taux d'engrais (kg/m²) :", min_value=0.01, value=0.12, step=0.01)
 
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
 
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.info("🌵 Rôle du bio-hydrogel")
-        with st.expander("Afficher les détails"):
-            st.write("""
-            - **Source naturelle :** Extrait des cladodes de figuier de Barbarie (Opuntia ficus-indica).
-            - **Fonction au champ :** Crée un réseau gélatineux microscopique autour des racines pour retenir l'eau et les nutriments.
-            """)
-        
-    with col2:
-        st.info(f"🌿 Culture ({crop_type})")
-        with st.expander("Afficher les détails"):
-            st.write(f"""
-            - **Culture étudiée :** {crop_type}
-            - **Type de sol :** {soil_type}
-            - **Fertilisant total requis :** {total_crop_fertilizer_kg:.1f} kg pour la surface spécifiée.
-            """)
-        
-    with col3:
-        st.info("💧 Efficacité de l'irrigation")
-        with st.expander("Afficher l'impact"):
-            st.write("""
-            - **Économie d'eau :** Réduction de la fréquence d'arrosage jusqu'à 40%.
-            - **Résistance à la sécheresse :** Protection contre le stress hydrique en périodes chaudes.
-            """)
-
-    st.markdown("---")
-    st.header(f"📊 Tableau de bord agronomique pour : {crop_type}")
-
+    st.header(f"📊 Tableau de bord agronomique : {crop_type}")
     mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("Hydrogel suggéré", f"{hydrogel_needed_kg:.1f} kg")
-    mcol2.metric("Engrais total du champ", f"{total_crop_fertilizer_kg:.1f} kg")
+    mcol2.metric("Engrais total", f"{total_crop_fertilizer_kg:.1f} kg")
     mcol3.metric("Eau économisée", f"{water_saved_m3:.1f} m³")
 
-    st.markdown("---")
-    st.subheader("🌤️ Recommandations climatiques adaptées")
-    if "saharien" in climate_zone:
-        st.warning("⚠️ **Recommandation climat saharien :** En raison de l'évaporation intense, enterrez l'hydrogel à 35 cm de profondeur et optimisez le goutte-à-goutte.")
-    elif "semi-aride" in climate_zone:
-        st.info("💡 **Recommandation climat semi-aride :** Réduit considérablement le stress hydrique entre les pluies, permettant d'espacer les irrigations de 35%.")
-    else:
-        st.success("🌱 **Recommandation climat tempéré :** L'hydrogel prévient le lixiviation des nutriments en cas d'excès d'eau de pluie.")
-
-    st.markdown("---")
-    st.subheader("📅 Calendrier d'irrigation et de suivi suggéré")
+    st.subheader("📅 Calendrier d'irrigation suggéré")
     timeline_data = pd.DataFrame({
-        "Stade de la culture": ["Plantation / Établissement", "Croissance végétative", "Floraison et nouaison", "Maturation et récolte"],
-        "Effet du Bio-Hydrogel": ["Protection des jeunes racines et rétention initiale", "Approvisionnement continu en eau et nutriments", "Bouclier contre le stress thermique", "Diminution progressive pour la qualité du fruit"],
-        "Fréquence d'irrigation": ["Normale (réduction de 20%)", "Réduction de 40%", "Réduction de 35%", "Irrigation légère si nécessaire"]
+        "Stade de la culture": ["Plantation", "Croissance", "Floraison", "Maturation"],
+        "Effet du Bio-Hydrogel": ["Protection des racines", "Approvisionnement continu", "Bouclier thermique", "Diminution progressive"],
+        "Fréquence d'irrigation": ["Réduction de 20%", "Réduction de 40%", "Réduction de 35%", "Légère"]
     })
     st.table(timeline_data)
 
-    st.markdown("---")
-    st.subheader("📑 Résumé technique et téléchargement du rapport")
-    st.write(f"- **Superficie ciblée :** {area:,.0f} m²")
-    st.write(f"- **Zone climatique :** {climate_zone}")
-    st.write(f"- **Type de sol :** {soil_type}")
-    st.write(f"- **Besoin total en bio-hydrogel :** {hydrogel_needed_kg:.1f} kg")
-    st.write(f"- **Besoin total en engrais :** {total_crop_fertilizer_kg:.1f} kg")
-    
-    report_content = f"""AgriOpuntia Technical Report
-------------------------------------
-Crop Type: {crop_type}
-Target Area: {area} m²
-Climate Zone: {climate_zone}
-Soil Type: {soil_type}
-Bio-Hydrogel Needed: {hydrogel_needed_kg:.1f} kg
-Total Fertilizer Needed: {total_crop_fertilizer_kg:.1f} kg
-Estimated Water Saved: {water_saved_m3:.1f} m³
-------------------------------------
-Generated via AgriOpuntia Smart Platform.
-"""
-    st.download_button(
-        label="📥 Download Field Technical Report",
-        data=report_content,
-        file_name="AgriOpuntia_Field_Report.txt",
-        mime="text/plain"
-    )
+    report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
+    st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
 
 else:
     crop_type = st.sidebar.selectbox("Select Crop Type:", [
-        "Olive Trees", 
-        "Date Palm Trees", 
-        "Cereals (Wheat and Barley)", 
-        "Citrus (Oranges and Lemons)", 
-        "Dry Legumes (Fava beans, Chickpeas)", 
-        "Vegetables under Localized Irrigation (Tomatoes, Potatoes)"
+        "Olive Trees", "Date Palm Trees", "Cereals", "Citrus", "Dry Legumes", "Vegetables"
     ])
-    
-    soil_type = st.sidebar.selectbox("Soil Type (Lab Analysis Results):", [
-        "Sandy Soil",
-        "Loamy / Silt Loam Soil",
-        "Clay Soil",
-        "Sandy Clay Loam Soil",
-        "Silty Clay Loam Soil"
+    soil_type = st.sidebar.selectbox("Soil Type:", [
+        "Sandy Soil", "Loamy Soil", "Clay Soil", "Sandy Clay Loam", "Silty Clay Loam"
     ])
-    
-    climate_zone = st.sidebar.selectbox("Farm Climate Zone:", [
-        "Semi-arid / Arid climate (Hot summers)",
-        "Desert / Hyper-arid climate (Extreme heat, low rainfall)",
-        "Coastal / Temperate climate (Moderate humidity)"
+    climate_zone = st.sidebar.selectbox("Climate Zone:", [
+        "Semi-arid", "Desert", "Coastal"
     ])
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("📊 Field Area & Requirements")
-    area = st.sidebar.number_input("Target Field Area (in m²):", min_value=100, value=5000, step=500)
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("🌿 Fertilization Program")
-    fertilizer_rate = st.sidebar.number_input("Recommended Fertilizer Rate per m² (kg/m²):", min_value=0.01, value=0.12, step=0.01)
+    area = st.sidebar.number_input("Area (m²):", min_value=100, value=5000, step=500)
+    fertilizer_rate = st.sidebar.number_input("Fertilizer Rate (kg/m²):", min_value=0.01, value=0.12, step=0.01)
 
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
 
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.info("🌵 Bio-Hydrogel Role")
-        with st.expander("View Details"):
-            st.write("""
-            - **Natural Source:** Extracted from cactus cladodes (Opuntia ficus-indica).
-            - **Field Function:** Creates a microscopic gel network around roots to retain water and nutrients.
-            """)
-        
-    with col2:
-        st.info(f"🌿 Crop Customization ({crop_type})")
-        with st.expander("View Details"):
-            st.write(f"""
-            - **Studied Crop:** {crop_type}
-            - **Soil Type:** {soil_type}
-            - **Total Fertilizer:** {total_crop_fertilizer_kg:.1f} kg required for the area.
-            """)
-        
-    with col3:
-        st.info("💧 Water Efficiency")
-        with st.expander("View Impact"):
-            st.write("""
-            - **Water Saving:** Cuts irrigation frequency by up to 40%.
-            - **Resilience:** Protects crops from water stress during hot periods.
-            """)
-
-    st.markdown("---")
-    st.header(f"📊 Agricultural Dashboard for: {crop_type}")
-
+    st.header(f"📊 Agricultural Dashboard: {crop_type}")
     mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:.1f} kg")
-    mcol2.metric("Total Field Fertilizer", f"{total_crop_fertilizer_kg:.1f} kg")
+    mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:.1f} kg")
     mcol3.metric("Saved Water", f"{water_saved_m3:.1f} m³")
 
-    st.markdown("---")
-    st.subheader("🌤️ Climate-Based Recommendations")
-    if "Desert" in climate_zone:
-        st.warning("⚠️ **Desert Climate Recommendation:** Due to high evaporation, bury the hydrogel 35 cm deep and use precise drip irrigation.")
-    elif "Semi-arid" in climate_zone:
-        st.info("💡 **Semi-Arid Climate Recommendation:** Effectively mitigates drought shocks between rainfalls, cutting irrigation frequency by 35%.")
-    else:
-        st.success("🌱 **Temperate Climate Recommendation:** Hydrogel prevents nutrient leaching caused by excess rainfall.")
-
-    st.markdown("---")
-    st.subheader("📅 Suggested Irrigation & Monitoring Timeline")
+    st.subheader("📅 Suggested Irrigation Timeline")
     timeline_data = pd.DataFrame({
-        "Crop Growth Stage": ["Planting / Establishment", "Vegetative Growth", "Flowering & Fruit Set", "Maturation & Harvest"],
-        "Bio-Hydrogel Effect": ["Protects young roots & retains initial moisture", "Provides steady water & nutrient supply", "Acts as a shield against heat stress", "Gradually reduces moisture for fruit quality"],
-        "Irrigation Frequency": ["Normal (20% reduced intervals)", "40% reduced intervals", "35% reduced intervals", "Light irrigation as needed"]
+        "Growth Stage": ["Planting", "Growth", "Flowering", "Maturation"],
+        "Bio-Hydrogel Effect": ["Root protection", "Steady supply", "Thermal shield", "Gradual reduction"],
+        "Irrigation Frequency": ["20% less", "40% less", "35% less", "Light"]
     })
     st.table(timeline_data)
 
-    st.markdown("---")
-    st.subheader("📑 Technical & Agronomic Summary & Report Download")
-    st.write(f"- **Target Area:** {area:,.0f} m²")
-    st.write(f"- **Climate Zone:** {climate_zone}")
-    st.write(f"- **Soil Type:** {soil_type}")
-    st.write(f"- **Total Bio-Hydrogel Requirement:** {hydrogel_needed_kg:.1f} kg")
-    st.write(f"- **Total Fertilizer Requirement:** {total_crop_fertilizer_kg:.1f} kg")
-    
-    report_content = f"""AgriOpuntia Technical Report
-------------------------------------
-Crop Type: {crop_type}
-Target Area: {area} m²
-Climate Zone: {climate_zone}
-Soil Type: {soil_type}
-Bio-Hydrogel Needed: {hydrogel_needed_kg:.1f} kg
-Total Fertilizer Needed: {total_crop_fertilizer_kg:.1f} kg
-Estimated Water Saved: {water_saved_m3:.1f} m³
-------------------------------------
-Generated via AgriOpuntia Smart Platform.
-"""
-    st.download_button(
-        label="📥 Download Field Technical Report",
-        data=report_content,
-        file_name="AgriOpuntia_Field_Report.txt",
-        mime="text/plain"
-    )
+    report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
+    st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
+
 
 
 
