@@ -25,10 +25,10 @@ if lang == "العربية":
     ])
     
     soil_type = st.sidebar.selectbox("نوع التربة (حسب نتائج تحليل التربة المخبري):", [
-        "تربة رملية (Sandy) - نفاذية عالية جداً وحاجة قصوى للهيدروجيل",
-        "تربة لومية أو طينية سلتية (Loamy / Silt Loam) - متوازنة",
-        "تربة طينية ثقيلة (Clay) - احتفاظ عالي بالماء وتماسك",
-        "تربة رملية طينية (Sandy Clay Loam) - متوسطة النفاذية",
+        "تربة رملية (Sandy)",
+        "تربة لومية أو طينية سلتية (Loamy / Silt Loam)",
+        "تربة طينية ثقيلة (Clay)",
+        "تربة رملية طينية (Sandy Clay Loam)",
         "تربة غرينية طينية (Silty Clay Loam)"
     ])
     
@@ -110,10 +110,10 @@ elif lang == "Français":
     ])
     
     soil_type = st.sidebar.selectbox("Type de sol (selon l'analyse de laboratoire) :", [
-        "Sol sableux (Sandy) - Forte perméabilité et besoin maximal en hydrogel",
-        "Sol limoneux (Loamy / Silt Loam) - Équilibré",
-        "Sol argileux lourd (Clay) - Haute rétention d'eau",
-        "Sol sablo-argileux (Sandy Clay Loam) - Perméabilité moyenne",
+        "Sol sableux (Sandy)",
+        "Sol limoneux (Loamy / Silt Loam)",
+        "Sol argileux lourd (Clay)",
+        "Sol sablo-argileux (Sandy Clay Loam)",
         "Sol limo-argileux (Silty Clay Loam)"
     ])
     
@@ -191,10 +191,10 @@ else:
     ])
     
     soil_type = st.sidebar.selectbox("Soil Type (Lab Analysis Results):", [
-        "Sandy Soil - Very high permeability & maximum hydrogel need",
-        "Loamy / Silt Loam Soil - Balanced",
-        "Clay Soil - High water retention",
-        "Sandy Clay Loam Soil - Medium permeability",
+        "Sandy Soil",
+        "Loamy / Silt Loam Soil",
+        "Clay Soil",
+        "Sandy Clay Loam Soil",
         "Silty Clay Loam Soil"
     ])
     
@@ -257,6 +257,8 @@ else:
     - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone
     - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake
     """)
+
+
 
 
 
