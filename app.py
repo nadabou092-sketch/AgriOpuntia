@@ -7,14 +7,50 @@ st.set_page_config(
     layout="wide"
 )
 
+# تنسيق CSS مخصص مستوحى من ألوان صبار التين الشوكي وثماره (أخضر صباري ووردي ثمري)
+st.markdown("""
+<style>
+    .main-header {
+        background: linear-gradient(135deg, #2d5a27 0%, #3b7a57 50%, #88b04b 100%);
+        padding: 30px;
+        border-radius: 15px;
+        color: white;
+        text-align: center;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .main-header h1 {
+        color: white !important;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    .main-header p {
+        color: #f8f9fa !important;
+        font-size: 1.2rem;
+    }
+    .stMetric {
+        background-color: #f4f9f4;
+        padding: 15px;
+        border-radius: 10px;
+        border-right: 4px solid #2d5a27;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# واجهة الهيدر البصرية المستوحاة من صورة التين الشوكي
+st.markdown("""
+<div class="main-header">
+    <h1>🌵 AgriOpuntia</h1>
+    <p>المنصة الذكية لتطبيق الهيدروجيل الحيوي المستخلص من التين الشوكي وحساب التسميد الدقيق</p>
+</div>
+""", unsafe_allow_html=True)
+
 # القائمة الجانبية للإعدادات واللغة
 st.sidebar.title("⚙️ إعدادات الحقل والمزرعة / Farm Settings")
 lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"])
 
 if lang == "العربية":
-    st.title("🌵 AgriOpuntia")
-    st.subheader("المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد")
-    
     crop_type = st.sidebar.selectbox("اختر المحصول الزراعي:", [
         "أشجار الزيتون", 
         "نخيل التمر", 
@@ -79,7 +115,7 @@ if lang == "العربية":
 
     st.markdown("---")
     st.markdown(f"""
-    <h2 style="direction: rtl; text-align: right;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
+    <h2 style="direction: rtl; text-align: right; color: #2d5a27;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
     """, unsafe_allow_html=True)
 
     mcol1, mcol2, mcol3 = st.columns(3)
@@ -99,7 +135,7 @@ if lang == "العربية":
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="background-color: #d1e7dd; padding: 15px; border-radius: 8px; border-right: 5px solid #0f5132; direction: rtl; text-align: right; color: #0f5132; margin-top: 15px;">
+    <div style="background-color: #e8f5e9; padding: 15px; border-radius: 8px; border-right: 5px solid #2d5a27; direction: rtl; text-align: right; color: #1b5e20; margin-top: 15px;">
         <b>💡 إرشادات وتوصيات تطبيقية ميدانية:</b>
         <ul style="margin-top: 10px; padding-right: 20px;">
             <li><b>عمق تطبيق الهيدروجيل:</b> يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة)</li>
@@ -109,9 +145,6 @@ if lang == "العربية":
     """, unsafe_allow_html=True)
 
 elif lang == "Français":
-    st.title("🌵 AgriOpuntia")
-    st.subheader("Plateforme intelligente d'application de bio-hydrogel et de calcul de fertilisation")
-    
     crop_type = st.sidebar.selectbox("Sélectionner la culture :", [
         "Olivier", 
         "Palmier dattier", 
@@ -190,9 +223,6 @@ elif lang == "Français":
     """)
 
 else:
-    st.title("🌵 AgriOpuntia")
-    st.subheader("Smart Platform for Bio-Hydrogel Application & Fertilization Calculation")
-    
     crop_type = st.sidebar.selectbox("Select Crop Type:", [
         "Olive Trees", 
         "Date Palm Trees", 
