@@ -86,11 +86,11 @@ if lang == "العربية":
     st.write(f"- **الاحتياج الإجمالي من الهيدروجيل الحيوي:** {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور.")
     st.write(f"- **الاحتياج الإجمالي من الأسمدة:** {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول.")
     
-    # استبدال العبارة القديمة بالنصائح الميدانية لتطبيق الهيدروجيل والتسميد
+    # تنسيق كل نصيحة في سطر واحد منظم
     st.success("""
     💡 **إرشادات وتوصيات تطبيقية ميدانية:**
-    - **عمق تطبيق الهيدروجيل:** يُنصح بوضع الهيدروجيل على عمق **20 إلى 30 سم** تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة) لضمان أقصى استفادة وعدم تعرضه للتبخر السطحي.
-    - **نصائح التسميد:** يُفضل تقسيم كمية الأسمدة المحسوبة على دفعات طوال الموسم الزراعي (التسميد المفتت أو مع مياه الري) لتعزيز كفاءة الامتصاص وتقليل ضياع العناصر الغذائية عبر الغسيل العميق.
+    - **عمق تطبيق الهيدروجيل:** يُنصح بوضع الهيدروجيل على عمق 20 إلى 30 سم تحت سطح التربة (مباشرة في منطقة انتشار الجذور الفعالة).
+    - **نصائح التسميد:** يُفضل تقسيم كمية الأسمدة المحسوبة على دفعات طوال الموسم الزراعي لتعزيز كفاءة الامتصاص وتقليل الضياع.
     """)
 
 elif lang == "Français":
@@ -170,8 +170,8 @@ elif lang == "Français":
     
     st.success("""
     💡 **Conseils et recommandations pratiques :**
-    - **Profondeur d'application de l'hydrogel :** Il est recommandé de placer l'hydrogel à une profondeur de **20 à 30 cm** sous la surface (dans la zone active des racines) pour assurer une efficacité maximale et éviter l'évaporation.
-    - **Conseils de fertilisation :** Il est conseillé de fractionner la quantité d'engrais calculée tout au long de la saison de culture (fertigation ou épandage fractionné) pour optimiser l'absorption et réduire les pertes par lixiviation.
+    - **Profondeur de l'hydrogel :** Il est recommandé de placer l'hydrogel à une profondeur de 20 à 30 cm sous la surface (zone active des racines).
+    - **Conseils de fertilisation :** Il est conseillé de fractionner la quantité d'engrais tout au long de la saison pour optimiser l'absorption.
     """)
 
 else:
@@ -251,9 +251,11 @@ else:
     
     st.success("""
     💡 **Practical Field Guidelines & Recommendations:**
-    - **Hydrogel Application Depth:** It is recommended to apply the hydrogel at a depth of **20 to 30 cm** below the soil surface (directly within the active root zone) to ensure maximum efficiency and prevent surface evaporation.
-    - **Fertilization Advice:** It is best to split the calculated fertilizer amount into multiple doses throughout the growing season (fertigation or split application) to enhance nutrient uptake and minimize leaching losses.
+    - **Hydrogel Depth:** Apply the hydrogel at a depth of 20 to 30 cm below the soil surface within the active root zone.
+    - **Fertilization Advice:** Split the calculated fertilizer amount into multiple doses throughout the growing season to enhance uptake.
     """)
+
+
 
 
 
