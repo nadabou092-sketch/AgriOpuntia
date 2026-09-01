@@ -26,7 +26,7 @@ if lang != st.session_state.lang_choice:
     st.session_state.lang_choice = lang
     st.rerun()
 
-# --- قواميس الترجمة ---
+# --- قواميس الترجمة (بدون أي ذكر للمناخ) ---
 t = {
     "العربية": {
         "title": "AgriOpuntia 🇩🇿",
@@ -46,19 +46,12 @@ t = {
             "sandy_clay": "تربة رملية طينية - Sandy Clay",
             "silty_clay": "تربة غرينية طينية - Silty Clay"
         },
-        "climates": {
-            "semi_arid": "مناخ شبه جاف / جاف (حار صيفاً ومتقلب)",
-            "desert": "مناخ صحراوي جاف جداً (شديد الحرارة وقليل الأمطار)",
-            "coastal": "مناخ ساحلي / معتدل (رطوبة نسبية ومعتدل الحرارة)"
-        },
         "crop_label": "اختر المحصول الزراعي:",
         "soil_label": "نوع التربة (حسب التحليل المخبري):",
-        "climate_label": "المنطقة المناخية للمزرعة:",
         "area_label": "مساحة الحقل المستهدف (بالمتر المربع م²):",
         "fert_label": "كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):",
         "sidebar_options_header": "أدوات العرض والتحليل",
         "show_ai": "إظهار التحليل الذكي (AI Insights)",
-        "show_climate": "إظهار التوصيات المناخية",
         "card1_title": "🌵 دور الهيدروجيل الحيوي",
         "card1_text": "<b>• المصدر:</b> مستخلص طبيعي من ألواح صبار التين الشوكي.<br><b>• الوظيفة:</b> شبكة هلامية مجهرية حول الجذور لتحْبِس المياه والأسمدة.",
         "card2_title": "🌿 تخصيص المحصول والتربة",
@@ -72,8 +65,6 @@ t = {
         "ai_water": "توفير المياه:",
         "ai_dose": "الجرعة المقترحة:",
         "ai_fert": "كفاءة الأسمدة:",
-        "climate_header": "التوصيات الذكية حسب المناخ والمنطقة",
-        "climate_success": "تم تطبيق التعديلات المناخية بنجاح على معايير منطقتك المختارة:",
         "table_header": "الجدول الزمني المقترح لسقي ومتابعة المحصول",
         "table_cols": ["مرحلة نمو المحصول", "تأثير الهيدروجيل الحيوي", "تواتر الري الموصى به"],
         "table_rows": [
@@ -105,19 +96,12 @@ t = {
             "sandy_clay": "Sol sablo-argileux",
             "silty_clay": "Sol limono-argileux"
         },
-        "climates": {
-            "semi_arid": "Climat semi-aride", 
-            "desert": "Climat saharien", 
-            "coastal": "Climat côtier"
-        },
         "crop_label": "Sélectionner la culture :",
         "soil_label": "Type de sol :",
-        "climate_label": "Zone climatique :",
         "area_label": "Superficie (m²) :",
         "fert_label": "Taux d'engrais (kg/m²) :",
         "sidebar_options_header": "Options d'affichage",
         "show_ai": "Afficher Insights IA",
-        "show_climate": "Afficher Recommandations Climatiques",
         "card1_title": "🌵 Rôle du Bio-Hydrogel",
         "card1_text": "<b>• Source:</b> Extrait naturel de figuier de barbarie.<br><b>• Fonction:</b> Rétention d'eau et d'nutriments autour des racines.",
         "card2_title": "🌿 Culture & Sol",
@@ -131,8 +115,6 @@ t = {
         "ai_water": "Économie d'eau :",
         "ai_dose": "Dose suggérée :",
         "ai_fert": "Efficacité des engrais :",
-        "climate_header": "Recommandations Climatiques",
-        "climate_success": "Adaptations climatiques appliquées avec succès à vos paramètres régionaux :",
         "table_header": "Calendrier d'irrigation et de suivi",
         "table_cols": ["Phase de culture", "Effet du Bio-Hydrogel", "Fréquence d'irrigation"],
         "table_rows": [
@@ -164,19 +146,12 @@ t = {
             "sandy_clay": "Sandy Clay Loam",
             "silty_clay": "Silty Clay Loam"
         },
-        "climates": {
-            "semi_arid": "Semi-arid climate", 
-            "desert": "Desert climate", 
-            "coastal": "Coastal climate"
-        },
         "crop_label": "Select Crop Type:",
         "soil_label": "Soil Type:",
-        "climate_label": "Climate Zone:",
         "area_label": "Target Area (m²):",
         "fert_label": "Recommended fertilizer (kg/m²):",
         "sidebar_options_header": "Display Options",
         "show_ai": "Show AI Insights",
-        "show_climate": "Show Climate Recommendations",
         "card1_title": "🌵 Bio-Hydrogel Role",
         "card1_text": "<b>• Source:</b> Natural extract from Opuntia pads.<br><b>• Function:</b> Retains water and nutrients around roots.",
         "card2_title": "🌿 Crop & Soil",
@@ -190,8 +165,6 @@ t = {
         "ai_water": "Water Savings:",
         "ai_dose": "Recommended Dose:",
         "ai_fert": "Fertilizer Efficiency:",
-        "climate_header": "Climate Recommendations",
-        "climate_success": "Custom climate adaptations applied successfully to your selected regional parameters:",
         "table_header": "Proposed Irrigation & Monitoring Schedule",
         "table_cols": ["Crop Growth Stage", "Bio-Hydrogel Effect", "Recommended Irrigation"],
         "table_rows": [
@@ -281,20 +254,6 @@ st.markdown(f"""
         font-size: 0.95rem;
         unicode-bidi: plaintext;
     }}
-    .climate-box {{
-        background-color: #eafaf1;
-        border-inline-start: 5px solid #2ecc71;
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        direction: {lang_data['dir']};
-        text-align: {lang_data['align']};
-        color: #1e8449;
-        font-weight: 600;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-        unicode-bidi: plaintext;
-    }}
     .custom-table {{
         width: 100%;
         border-collapse: collapse;
@@ -333,7 +292,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مدخلات القائمة الجانبية (بمفاتيح ثابتة ومستقرة تماماً) ---
+# --- مدخلات القائمة الجانبية (بمفاتيح ثابتة ومستقرة تماماً بدون مناخ) ---
 crop_key = st.sidebar.selectbox(
     lang_data['crop_label'], 
     options=list(lang_data['crops'].keys()), 
@@ -349,14 +308,6 @@ soil_key = st.sidebar.selectbox(
     key="selected_soil_key"
 )
 soil_type = lang_data['soils'][soil_key]
-
-climate_key = st.sidebar.selectbox(
-    lang_data['climate_label'], 
-    options=list(lang_data['climates'].keys()), 
-    format_func=lambda x: lang_data['climates'][x],
-    key="selected_climate_key"
-)
-climate_zone = lang_data['climates'][climate_key]
 
 st.sidebar.markdown("---")
 area = st.sidebar.number_input(
@@ -380,7 +331,6 @@ fertilizer_rate = st.sidebar.number_input(
 st.sidebar.markdown("---")
 st.sidebar.markdown(f"**{lang_data['sidebar_options_header']}**")
 show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=True, key="chk_ai_insights")
-show_climate_recs = st.sidebar.checkbox(lang_data['show_climate'], value=True, key="chk_climate_recs")
 
 # --- الحسابات العلمية الدقيقة ---
 hydrogel_needed_kg = area * 0.12 
@@ -444,16 +394,6 @@ if show_ai_insights:
     </div>
     """, unsafe_allow_html=True)
 
-# --- التوصيات المناخية (مرتبطة تماماً بحالة الزر في الشريط الجانبي) ---
-if show_climate_recs:
-    st.markdown("---")
-    st.subheader(f"🌤️ {lang_data['climate_header']}")
-    st.markdown(f"""
-    <div class="climate-box" dir="auto">
-        ✅ {lang_data['climate_success']} <span dir="auto">({climate_zone})</span>
-    </div>
-    """, unsafe_allow_html=True)
-
 # --- جدول المتابعة ---
 st.markdown("---")
 st.markdown(f'<h3 style="direction: {lang_data["dir"]}; text-align: {lang_data["align"]}; color: #1b4d3e;">📅 {lang_data["table_header"]}</h3>', unsafe_allow_html=True)
@@ -483,6 +423,8 @@ st.download_button(
     file_name="AgriOpuntia_Report.txt",
     mime="text/plain"
 )
+
+
 
 
 
