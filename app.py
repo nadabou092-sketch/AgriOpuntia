@@ -8,15 +8,24 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- القائمة الجانبية لإدارة اللغة ---
+# --- القائمة الجانبية لإدارة اللغة مع إعادة تحميل فورية ---
 st.sidebar.title("⚙️ الإعدادات / Settings")
+
+if 'lang_choice' not in st.session_state:
+    st.session_state.lang_choice = "العربية"
+
 lang = st.sidebar.selectbox(
     "Choose Language / اختر اللغة / Langue", 
     ["العربية", "Français", "English"],
+    index=["العربية", "Français", "English"].index(st.session_state.lang_choice),
     key="language_selector"
 )
 
-# --- قواميس الترجمة والمفاتيح الثابتة ---
+if lang != st.session_state.lang_choice:
+    st.session_state.lang_choice = lang
+    st.rerun()
+
+# --- قواميس الترجمة ---
 t = {
     "العربية": {
         "title": "AgriOpuntia 🇩🇿",
@@ -46,7 +55,7 @@ t = {
         "climate_label": "المنطقة المناخية للمزرعة:",
         "area_label": "مساحة الحقل المستهدف (بالمتر المربع م²):",
         "fert_label": "كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):",
-        "ai_tools": "أدوات المستشار الذكي",
+        "sidebar_options_header": "أدوات العرض والتحليل",
         "show_ai": "إظهار التحليل الذكي (AI Insights)",
         "show_climate": "إظهار التوصيات المناخية",
         "card1_title": "🌵 دور الهيدروجيل الحيوي",
@@ -105,7 +114,7 @@ t = {
         "climate_label": "Zone climatique :",
         "area_label": "Superficie (m²) :",
         "fert_label": "Taux d'engrais (kg/m²) :",
-        "ai_tools": "Assistant IA",
+        "sidebar_options_header": "Options d'affichage",
         "show_ai": "Afficher Insights IA",
         "show_climate": "Afficher Recommandations Climatiques",
         "card1_title": "🌵 Rôle du Bio-Hydrogel",
@@ -164,7 +173,7 @@ t = {
         "climate_label": "Climate Zone:",
         "area_label": "Target Area (m²):",
         "fert_label": "Recommended fertilizer (kg/m²):",
-        "ai_tools": "AI Assistant",
+        "sidebar_options_header": "Display Options",
         "show_ai": "Show AI Insights",
         "show_climate": "Show Climate Recommendations",
         "card1_title": "🌵 Bio-Hydrogel Role",
@@ -199,9 +208,12 @@ t = {
 
 lang_data = t[lang]
 
-# --- تنسيق CSS عام للتطبيق ---
+# --- تنسيق CSS عام ---
 st.markdown(f"""
 <style>
+    .stApp {{
+        direction: {lang_data['dir']};
+    }}
     .main-header {{
         background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
         padding: 22px;
@@ -252,7 +264,7 @@ st.markdown(f"""
     }}
     .custom-box {{
         background-color: #e8f4f8;
-        border-left: 5px solid #1b4d3e;
+        border-inline-start: 5px solid #1b4d3e;
         padding: 15px 20px;
         border-radius: 8px;
         margin-top: 10px;
@@ -269,6 +281,19 @@ st.markdown(f"""
         margin-bottom: 8px;
         color: #2c3e50;
         font-size: 0.95rem;
+    }}
+    .climate-box {{
+        background-color: #eafaf1;
+        border-inline-start: 5px solid #2ecc71;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        direction: {lang_data['dir']};
+        text-align: {lang_data['align']};
+        color: #1e8449;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     }}
     .custom-table {{
         width: 100%;
@@ -308,7 +333,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مدخلات القائمة الجانبية بمفاتيح ثابتة ---
+# --- مدخلات القائمة الجانبية ---
 crop_key = st.sidebar.selectbox(
     lang_data['crop_label'], 
     options=list(lang_data['crops'].keys()), 
@@ -339,16 +364,18 @@ area = st.sidebar.number_input(lang_data['area_label'], min_value=100.0, value=2
 st.sidebar.markdown("---")
 fertilizer_rate = st.sidebar.number_input(lang_data['fert_label'], min_value=0.01, value=0.10, step=0.01, key="input_fert")
 
+# --- الخيارات في أسفل القائمة الجانبية لمنع الاكتظاظ ---
 st.sidebar.markdown("---")
-show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=False, key="chk_ai")
-show_climate_recs = st.sidebar.checkbox(lang_data['show_climate'], value=False, key="chk_climate")
+st.sidebar.markdown(f"**{lang_data['sidebar_options_header']}**")
+show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=False, key="chk_ai_insights")
+show_climate_recs = st.sidebar.checkbox(lang_data['show_climate'], value=False, key="chk_climate_recs")
 
 # --- الحسابات العلمية ---
 hydrogel_needed_kg = area * 0.12 
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
 
-# --- البطاقات الثلاث المتساوية بدقة ---
+# --- البطاقات الثلاث المتساوية ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -391,7 +418,7 @@ mcol1.metric(lang_data['m1'], f"{hydrogel_needed_kg:,.1f} kg" if lang != "الع
 mcol2.metric(lang_data['m2'], f"{total_crop_fertilizer_kg:,.1f} kg" if lang != "العربية" else f"{total_crop_fertilizer_kg:,.1f} كغ")
 mcol3.metric(lang_data['m3'], f"{water_saved_m3:,.1f} m³")
 
-# --- التحليل الذكي (تم تنظيم الـ HTML بنظام اتجاه دقيق حسب اللغة) ---
+# --- التحليل الذكي (يظهر فقط عند التأشير عليه من القائمة الجانبية) ---
 if show_ai_insights:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
@@ -405,10 +432,15 @@ if show_ai_insights:
     </div>
     """, unsafe_allow_html=True)
 
+# --- التوصيات المناخية (تظهر فقط عند التأشير عليها من القائمة الجانبية) ---
 if show_climate_recs:
     st.markdown("---")
     st.subheader(f"🌤️ {lang_data['climate_header']}")
-    st.success(lang_data['climate_success'])
+    st.markdown(f"""
+    <div class="climate-box">
+        ✅ {lang_data['climate_success']} ({climate_zone})
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- جدول المتابعة ---
 st.markdown("---")
@@ -437,7 +469,10 @@ st.download_button(
     label=lang_data['download_btn'],
     data=report_content,
     file_name="AgriOpuntia_Report.txt",
-    mime="text/plain")
+    mime="text/plain"
+)
+
+
 
 
 
