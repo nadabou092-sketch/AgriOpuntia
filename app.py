@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 1. تهيئة القيم الافتراضية في st.session_state لمنع ضياعها عند تغيير اللغة
+# 1. تهيئة القيم الافتراضية في st.session_state لمنع ضياعها
 if "lang" not in st.session_state:
     st.session_state.lang = "العربية"
 if "area" not in st.session_state:
@@ -90,8 +90,8 @@ st.markdown("---")
 st.sidebar.title("⚙️ إعدادات الحقل / Farm Settings")
 lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"], key="lang")
 
-# مدخلات عامة ثابتة في السايدبار مع استخدام keys لمنع تصفيرها
-area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100, value=5000.0, step=500.0, key="area")
+# مدخلات عامة ثابتة (كلها بـ float لمنع أخطاء النوع)
+area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100.0, value=5000.0, step=500.0, key="area")
 fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها للمتر المربع (كغ/م²):", min_value=0.01, value=0.12, step=0.01, key="fertilizer_rate")
 
 # حسابات مشتركة ثابتة
@@ -245,7 +245,7 @@ else:
     climate_zone = st.sidebar.selectbox("Climate Zone:", ["Semi-arid", "Desert", "Coastal"], key="climate_en")
 
     st.header(f"📊 Agricultural Dashboard: {crop_type}")
-    mcol1, mcol2, mcol3 = st.columns3() if hasattr(st, 'columns3') else st.columns(3)
+    mcol1, mcol2, mcol3 = st.columns(3)
     mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:.1f} kg")
     mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:.1f} kg")
     mcol3.metric("Saved Water", f"{water_saved_m3:.1f} m³")
@@ -260,6 +260,8 @@ else:
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
+
+
 
 
 
