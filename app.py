@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- تنسيق CSS مخصص للواجهة والجدول (مع ضبط حجم الخط ليبقى في سطر واحد) ---
+# --- تنسيق CSS مخصص للواجهة والجدول ---
 st.markdown("""
 <style>
     .main-header {
@@ -29,7 +29,7 @@ st.markdown("""
     }
     .main-header p {
         color: #f4f1ea !important;
-        font-size: 0.95rem; /* تصغير حجم الخط قليلاً ليبقى في سطر واحد */
+        font-size: 0.95rem;
         margin: 0;
     }
     .custom-table {
@@ -73,23 +73,14 @@ st.markdown("""
 # --- القائمة الجانبية (Sidebar) ---
 st.sidebar.title("⚙️ الإعدادات / Settings")
 
+# إرجاع اللغات كما كانت بالاسم العادي
 lang = st.sidebar.selectbox(
     "Choose Language / اختر اللغة / Langue", 
-    ["🇩🇿 ع", "🇫🇷 FR", "🇬🇧 ENG"]
+    ["العربية", "Français", "English"]
 )
 
-# اللوقو البصري في الشريط الجانبي
-st.sidebar.markdown("""
-    <div style="text-align: center; padding: 10px;">
-        <span style="font-size: 45px;">🌵💧</span>
-        <h3 style="color: #1b4d3e; margin: 0;">AgriOpuntia</h3>
-        <p style="color: #666; font-size: 11px;">مخبر الزراعة الذكية والهيدروجيل</p>
-    </div>
-    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
-""", unsafe_allow_html=True)
-
 # --- محتوى التطبيق حسب اللغة ---
-if "ع" in lang:
+if lang == "العربية":
     crop_type = st.sidebar.selectbox("اختر المحصول الزراعي:", [
         "أشجار الزيتون", 
         "نخيل التمر", 
@@ -261,7 +252,7 @@ Generated via AgriOpuntia Smart Platform.
         mime="text/plain"
     )
 
-elif "FR" in lang:
+elif lang == "Français":
     crop_type = st.sidebar.selectbox("Sélectionner la culture :", ["Olivier", "Palmier dattier", "Céréales", "Agrumes", "Légumineuses", "Légumes"])
     soil_type = st.sidebar.selectbox("Type de sol :", ["Sol sableux", "Sol limoneux", "Sol argileux lourd", "Sol sablo-argileux"])
     climate_zone = st.sidebar.selectbox("Zone climatique :", ["Climat semi-aride", "Climat saharien", "Climat côtier"])
@@ -310,6 +301,8 @@ else:
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
+
+
 
 
 
