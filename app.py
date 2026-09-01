@@ -481,11 +481,18 @@ st.markdown(f"""
 
 # --- التقرير والتحميل ---
 st.markdown("---")
-st.subheader(f"📑 {lang_data['report_header']}")
-ai_reply = f"Pour {crop_type} sur {area} m² ({soil_type}), la quantité d'engrais est de {fertilizer:.1f} kg."
-st.markdown(ai_reply)
-st.session_state.messages.append({"role": "assistant", "content": ai_reply})
+st.subheader("📄 التقرير الفني وتحميل التقرير")
 
+report_content = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_type}\nArea: {area} m²\nFertilizer: {fertilizer:.1f} kg"
+
+st.text_area("محتوى التقرير:", report_content, height=150)
+
+st.download_button(
+    label="📥 تحميل التقرير (TXT)",
+    data=report_content,
+    file_name="AgriOpuntia_Report.txt",
+    mime="text/plain"
+)
 
 
 
