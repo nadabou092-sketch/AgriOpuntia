@@ -111,6 +111,12 @@ if lang == "العربية":
     st.sidebar.subheader("🌿 برنامج التسميد المخبري")
     fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):", min_value=0.01, value=0.10, step=0.01)
 
+    # --- أزرار التحكم الجانبية للتحليلات الذكية والتوصيات المناخية ---
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🤖 أدوات المستشار الذكي")
+    show_ai_insights = st.sidebar.checkbox("🤖 إظهار التحليل الذكي (AI Insights)", value=False)
+    show_climate_recs = st.sidebar.checkbox("🌤️ إظهار التوصيات المناخية", value=False)
+
     # الحسابات الفلاحية
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
@@ -160,36 +166,27 @@ if lang == "العربية":
     mcol2.metric("إجمالي أسمدة الحقل", f"{total_crop_fertilizer_kg:,.1f} كغ")
     mcol3.metric("المياه الموفّرة للحقل", f"{water_saved_m3:,.1f} م³")
 
-    # --- وحدة الذكاء الاصطناعي (على شكل زر أو رمز يضغط عليه الفلاح) ---
-    st.markdown("---")
-    
-    # استخدام استعراض تفاعلي (Popover) يفتح عند الضغط على الزر لتبقى الواجهة نظيفة
-    ai_col1, ai_col2 = st.columns([4, 1])
-    with ai_col1:
+    # --- عرض التحليل الذكي في الواجهة فقط إذا تم تفعيله من الجنب ---
+    if show_ai_insights:
+        st.markdown("---")
         st.subheader("🤖 التحليل الذكي وتوصيات الهيدروجيل (AI Insights)")
-    with ai_col2:
-        pass
+        st.info(f"""
+        **📊 تقرير المستشار الذكي لمحصول ({crop_type}):**
+        * 💧 **نسبة توفير المياه المتوقعة:** بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة **35% إلى 45%**.
+        * 🧪 **الجرعة المثالية الموصى بها:** استخدام **{hydrogel_needed_kg:,.1f} كغ** موزعة على عمق منطقة الجذر الحيوية.
+        * 🌱 **الأثر الاقتصادي:** رفع كفاءة امتصاص الأسمدة المُقدرة بـ ({total_crop_fertilizer_kg:,.1f} كغ) وتقليل فقدان العناصر بالترشيح.
+        """)
 
-    # زر منبثق يضغط عليه الفلاح لعرض التقرير الذكي
-    with st.popover("💡 اضغط هنا لعرض تقرير المستشار الذكي"):
-        st.markdown(f"""
-        <div dir="rtl" style="text-align: right; line-height: 1.8;">
-        <b>📊 تقرير المستشار الذكي لمحصول ({crop_type}):</b><br>
-        • 💧 <b>نسبة توفير المياه المتوقعة:</b> بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة <b>35% إلى 45%</b>.<br>
-        • 🧪 <b>الجرعة المثالية الموصى بها:</b> استخدام <b>{hydrogel_needed_kg:,.1f} كغ</b> موزعة على عمق منطقة الجذر الحيوية.<br>
-        • 🌱 <b>الأثر الاقتصادي:</b> رفع كفاءة امتصاص الأسمدة المُقدرة بـ ({total_crop_fertilizer_kg:,.1f} كغ) وتقليل فقدان العناصر بالترشيح.
-        </div>
-        """, unsafe_allow_html=True)
-
-    # --- التوصيات المناخية ---
-    st.markdown("---")
-    st.subheader("🌤️ التوصيات الذكية حسب المناخ والمنطقة")
-    if "صحراوي" in climate_zone:
-        st.warning("⚠️ **توصية للمناخ الصحراوي:** نظراً لشدة التبخر، يُنصح بزيادة عمق وضع الهيدروجيل إلى 35 سم واعتماد نظام سقي قطرات دقيق ومكثف في ذروة الصيف.")
-    elif "شبه جاف" in climate_zone:
-        st.info("💡 **توصية للمناخ الشبه جاف:** الهيدروجيل سيقلل بوضوح من صدمة الجفاف بين فترات المطر، مع إمكانية تقليص جدول الري بـ 35%.")
-    else:
-        st.success("🌱 **توصية للمناخ الساحلي/المعتدل:** الرطوبة النسبية مساعدة، والهيدروجيل سيمنع غسل العناصر الغذائية نحو الأسفل بسبب مياه الأمطار الزائدة.")
+    # --- عرض التوصيات المناخية في الواجهة فقط إذا تم تفعيلها من الجنب ---
+    if show_climate_recs:
+        st.markdown("---")
+        st.subheader("🌤️ التوصيات الذكية حسب المناخ والمنطقة")
+        if "صحراوي" in climate_zone:
+            st.warning("⚠️ **توصية للمناخ الصحراوي:** نظراً لشدة التبخر، يُنصح بزيادة عمق وضع الهيدروجيل إلى 35 سم واعتماد نظام سقي قطرات دقيق ومكثف في ذروة الصيف.")
+        elif "شبه جاف" in climate_zone:
+            st.info("💡 **توصية للمناخ الشبه جاف:** الهيدروجيل سيقلل بوضوح من صدمة الجفاف بين فترات المطر، مع إمكانية تقليص جدول الري بـ 35%.")
+        else:
+            st.success("🌱 **توصية للمناخ الساحلي/المعتدل:** الرطوبة النسبية مساعدة، والهيدروجيل سيمنع غسل العناصر الغذائية نحو الأسفل بسبب مياه الأمطار الزائدة.")
 
     # --- جدول السقي المنظم ---
     st.markdown("---")
@@ -267,6 +264,11 @@ elif lang == "Français":
     area = st.sidebar.number_input("Superficie (m²) :", min_value=100.0, value=20000.0, step=500.0)
     fertilizer_rate = st.sidebar.number_input("Taux d'engrais (kg/m²) :", min_value=0.01, value=0.10, step=0.01)
 
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🤖 Assistant IA")
+    show_ai_insights = st.sidebar.checkbox("🤖 Afficher Insights IA", value=False)
+    show_climate_recs = st.sidebar.checkbox("🌤️ Afficher Recommandations Climatiques", value=False)
+
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
@@ -277,10 +279,15 @@ elif lang == "Français":
     mcol2.metric("Engrais total", f"{total_crop_fertilizer_kg:,.1f} kg")
     mcol3.metric("Eau économisée", f"{water_saved_m3:,.1f} m³")
 
-    st.markdown("---")
-    st.subheader("🤖 Recommandations Intelligentes (AI Insights)")
-    with st.popover("💡 Afficher le rapport IA"):
+    if show_ai_insights:
+        st.markdown("---")
+        st.subheader("🤖 Recommandations Intelligentes (AI Insights)")
         st.info(f"**Rapport IA ({crop_type}):** Économie d'eau estimée à **35%-45%**. Quantité recommandée de bio-hydrogel: **{hydrogel_needed_kg:,.1f} kg**.")
+
+    if show_climate_recs:
+        st.markdown("---")
+        st.subheader("🌤️ Recommandations Climatiques")
+        st.success("Recommandation adaptée à votre zone climatique et aux conditions de sol.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
@@ -292,6 +299,11 @@ else:
     area = st.sidebar.number_input("Target Area (m²):", min_value=100.0, value=20000.0, step=500.0)
     fertilizer_rate = st.sidebar.number_input("Recommended fertilizer (kg/m²):", min_value=0.01, value=0.10, step=0.01)
 
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🤖 AI Assistant")
+    show_ai_insights = st.sidebar.checkbox("🤖 Show AI Insights", value=False)
+    show_climate_recs = st.sidebar.checkbox("🌤️ Show Climate Recommendations", value=False)
+
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
@@ -302,13 +314,19 @@ else:
     mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:,.1f} kg")
     mcol3.metric("Saved Water", f"{water_saved_m3:,.1f} m³")
 
-    st.markdown("---")
-    st.subheader("🤖 AI Smart Recommendations")
-    with st.popover("💡 Show AI Report"):
+    if show_ai_insights:
+        st.markdown("---")
+        st.subheader("🤖 AI Smart Recommendations")
         st.info(f"**AI Report ({crop_type}):** Water saving estimated between **35%-45%**. Recommended bio-hydrogel dose: **{hydrogel_needed_kg:,.1f} kg**.")
+
+    if show_climate_recs:
+        st.markdown("---")
+        st.subheader("🌤️ Climate Recommendations")
+        st.success("Tailored recommendations for your selected climate zone and soil conditions.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
+
 
 
 
