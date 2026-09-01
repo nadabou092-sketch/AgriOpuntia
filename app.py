@@ -432,34 +432,51 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مساعد الذكاء الاصطناعي الفلاحي التفاعلي (Agri-Chat) ---
+# --- 12. مساعد الذكاء الاصطناعي الفلاحي (Agri-Chat) ---
 if show_ai_module:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
     
-    # عرض سجل المحادثات
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # إدخال محادثة جديدة من المستخدم
-    if user_prompt := st.chat_input(lang_data['chat_placeholder']):
+    if user_prompt := st.chat_input(lang_data['chat_placeholder'], key="agri_chat_input_unique"):
         st.session_state.messages.append({"role": "user", "content": user_prompt})
         with st.chat_message("user"):
             st.markdown(user_prompt)
 
-        # استجابة الذكاء الاصطناعي المتخصصة قطاعياً
         with st.chat_message("assistant"):
-            if any(word in user_prompt.lower() for word in ["هيدروجيل", "hydrogel", "صبار", "opuntia", "ماء", "سقي", "رطوبة"]):
-                ai_reply = f"بخصوص استفسارك حول النشاط الفلاحي لـ **{crop_type}**، استخدام الهيدروجيل الحيوي المستخلص من صبار التين الشوكي في تربة مثل **{soil_type}** يساعد في خفض الاحتياجات المائية بحوالي 35-45%، مع الحفاظ على كفاءة امتصاص الأسمدة المحسوبة بـ **{total_crop_fertilizer_kg:,.1f} كغ**."
-            elif any(word in user_prompt.lower() for word in ["سماد", "fertilizer", "تسميد", "أسمدة"]):
-                ai_reply = f"كمية الأسمدة الموصى بها لمساحة **{area:,.0f} م²** الخاصة بـ **{crop_type}** تقدر بـ **{total_crop_fertilizer_kg:,.1f} كغ**. يُنصح دائماً بتوزيعها على دفعات لزيادة الكفاءة."
+            # التحقق من لغة السؤال لتحديد لغة الرد المناسبة
+            is_french = any(word in user_prompt.lower() for word in ["combien", "quel", "quelle", "est", "et", "pour", "dans", "sol", "quantité"])
+            is_english = any(word in user_prompt.lower() for word in ["how", "what", "is", "for", "in", "soil", "quantity", "amount"])
+
+            if is_french:
+                if any(word in user_prompt.lower() for word in ["hydrogel", "gel", "eau", "irrigation"]):
+                    ai_reply = f"Concernant votre question sur la culture de **{crop_type}**, l'utilisation du bio-hydrogel extrait de figuier de barbarie dans un sol de type **{soil_type}** permet de réduire les besoins en eau de 35% à 45%, tout en maintenant l'efficacité d'absorption des engrais calculée à **{total_crop_fertilizer_kg:,.1f} kg**."
+                elif any(word in user_prompt.lower() for word in ["engrais", "fertilisant", "fertilisation"]):
+                    ai_reply = f"La quantité d'engrais recommandée pour la superficie de **{area:,.0f} m²** de **{crop_type}** est de **{total_crop_fertilizer_kg:,.1f} kg**. Il est recommandé de l'appliquer en plusieurs fractionnements."
+                else:
+                    ai_reply = f"Bienvenue ! En tant qu'assistant intelligent d'**AgriOpuntia**, je suis là pour vous aider à gérer la culture de **{crop_type}**, optimiser l'irrigation et faire face au stress hydrique. Posez votre question agronomique !"
+            
+            elif is_english:
+                if any(word in user_prompt.lower() for word in ["hydrogel", "gel", "water", "irrigation"]):
+                    ai_reply = f"Regarding your inquiry about **{crop_type}**, applying the Opuntia-derived bio-hydrogel in **{soil_type}** helps reduce water requirements by 35-45%, while efficiently maintaining the calculated fertilizer uptake of **{total_crop_fertilizer_kg:,.1f} kg**."
+                elif any(word in user_prompt.lower() for word in ["fertilizer", "fertigation", "nutrient"]):
+                    ai_reply = f"The recommended fertilizer amount for **{area:,.0f} m²** of **{crop_type}** is **{total_crop_fertilizer_kg:,.1f} kg**. It is best applied in stages for optimal uptake."
+                else:
+                    ai_reply = f"Welcome! As your **AgriOpuntia** smart assistant, I am here to help you manage **{crop_type}**, optimize water usage, and boost farm efficiency. Feel free to ask your specific farming question!"
+            
             else:
-                ai_reply = f"أهلاً بكِ. بصفتي مساعدك الذكي في منصة **AgriOpuntia**، أنا هنا لمساعدتك في كل ما يتعلق بإدارة زراعة **{crop_type}**، تحسين مقاومة الجفاف، وتسيير الحقول بكفاءة عالية. تفطلي بطرح سؤالك الزراعي المحدد!"
+                if any(word in user_prompt.lower() for word in ["هيدروجيل", "hydrogel", "صبار", "ماء", "سقي", "رطوبة"]):
+                    ai_reply = f"بخصوص استفسارك حول النشاط الفلاحي لـ **{crop_type}**، استخدام الهيدروجيل الحيوي المستخلص من صبار التين الشوكي في تربة مثل **{soil_type}** يساعد في خفض الاحتياجات المائية بحوالي 35-45%، مع الحفاظ على كفاءة امتصاص الأسمدة المحسوبة بـ **{total_crop_fertilizer_kg:,.1f} كغ**."
+                elif any(word in user_prompt.lower() for word in ["سماد", "fertilizer", "تسميد", "أسمدة"]):
+                    ai_reply = f"كمية الأسمدة الموصى بها لمساحة **{area:,.0f} م²** الخاصة بـ **{crop_type}** تقدر بـ **{total_crop_fertilizer_kg:,.1f} كغ**. يُنصح دائماً بتوزيعها على دفعات لزيادة الكفاءة."
+                else:
+                    ai_reply = f"أهلاً بكِ. بصفتي مساعدك الذكي في منصة **AgriOpuntia**, أنا هنا لمساعدتك في كل ما يتعلق بإدارة زراعة **{crop_type}**، تحسين مقاومة الجفاف، وتسيير الحقول بكفاءة عالية. تفضلي بطرح سؤالك الزراعي المحدد!"
             
             st.markdown(ai_reply)
             st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-
 # --- جدول المتابعة ---
 st.markdown("---")
 st.markdown(f'<h3 style="direction: {lang_data["dir"]}; text-align: {lang_data["align"]}; color: #1b4d3e;">📅 {lang_data["table_header"]}</h3>', unsafe_allow_html=True)
