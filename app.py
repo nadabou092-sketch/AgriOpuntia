@@ -489,7 +489,7 @@ report_content = (
 )
 
 st.download_button(
-    label=lang_data['d
+    label=lang_data['hydrogel_needed']
 
 
 
