@@ -51,7 +51,7 @@ if "ع" in lang:
     field_area = st.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100.0, value=20000.0, step=100.0)
     
     st.markdown("---")
-    st.subheader("🌿 برنامج التسميد المخبري للمصول")
+    st.subheader("🌿 برنامج التسميد المخبري للمحصول")
     
     fertilizer_rate = st.number_input("كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):", min_value=0.0, value=0.10, step=0.01)
     total_fertilizer = field_area * fertilizer_rate
@@ -64,10 +64,7 @@ if "ع" in lang:
     
     if st.button("🚀 تشغيل خوارزمية التحليل الذكي"):
         with st.spinner("جاري معالجة بيانات التربة والمحصول عبر خوارزميات الزراعة الذكية..."):
-            # محاكاة ذكية مبنية على الخصائص
-            water_saved = field_area * 0.15 # تقدير توفير المياه باللتر بناء على الهيدروجيل
-            hydrogel_needed = field_area * 0.05 # كمية الهيدروجيل المقترحة كغ/م²
-            
+            hydrogel_needed = field_area * 0.05 
             st.info(f"""
             **📊 تقرير المستشار الذكي لمحصول ({crop_type}):**
             * 💧 **نسبة توفير المياه المتوقعة:** بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة **35% إلى 45%**.
@@ -99,7 +96,7 @@ elif "FR" in lang:
 else:
     st.subheader("🌾 Field Area & Requirements Inputs")
     crop_type = st.selectbox("Select Crop Type:", ["Olive Trees", "Date Palm Trees", "Cereals", "Citrus", "Vegetables"])
-    field_area = st.number_input("Target field area (in m²):", min_value=100.0, value2=20000.0 if 'value2' in globals() else 20000.0, step=100.0)
+    field_area = st.number_input("Target field area (in m²):", min_value=100.0, value=20000.0, step=100.0)
     
     st.markdown("---")
     st.subheader("🌿 Laboratory Fertilization Program")
@@ -116,6 +113,7 @@ else:
         * 💧 **Water Saving Potential:** Estimated reduction of irrigation water by **35% - 45%**.
         * 🧪 **Recommended Bio-Hydrogel Dose:** Approximately **{hydrogel_needed:,.1f} kg**.
         """)
+
 
 
 
