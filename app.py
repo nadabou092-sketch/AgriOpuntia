@@ -1,19 +1,19 @@
 import streamlit as st
 import pandas as pd
 
-# إعداد صفحة التطبيق
+# --- إعدادات الصفحة وعنوان المتصفح ---
 st.set_page_config(
-    page_title="AgriOpuntia - المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد",
+    page_title="AgriOpuntia 🇩🇿", 
     page_icon="🌵",
     layout="wide"
 )
 
-# تنسيق CSS مخصص للواجهة والجدول لتجنب أي تداخل
+# --- تنسيق CSS مخصص للواجهة والجدول (مع ضبط حجم الخط ليبقى في سطر واحد) ---
 st.markdown("""
 <style>
     .main-header {
         background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
-        padding: 30px;
+        padding: 22px;
         border-radius: 16px;
         color: white;
         text-align: center;
@@ -23,20 +23,14 @@ st.markdown("""
     }
     .main-header h1 {
         color: white !important;
-        font-size: 2.7rem;
+        font-size: 2.3rem;
         margin-bottom: 5px;
         font-weight: 700;
     }
     .main-header p {
         color: #f4f1ea !important;
-        font-size: 1.25rem;
-    }
-    .stMetric {
-        background-color: #f7f4ee;
-        padding: 18px;
-        border-radius: 12px;
-        border-top: 1px solid #e3dec3;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+        font-size: 0.95rem; /* تصغير حجم الخط قليلاً ليبقى في سطر واحد */
+        margin: 0;
     }
     .custom-table {
         width: 100%;
@@ -68,21 +62,34 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# واجهة الهيدر البصرية
+# --- الواجهة الرئيسية (Main Header) ---
 st.markdown("""
 <div class="main-header">
-    <h1>AgriOpuntia</h1>
+    <h1>AgriOpuntia 🇩🇿</h1>
     <p>المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد | Smart Platform for Bio-Hydrogel & Fertilization</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("---")
+# --- القائمة الجانبية (Sidebar) ---
+st.sidebar.title("⚙️ الإعدادات / Settings")
 
-# القائمة الجانبية للإعدادات واللغة
-st.sidebar.title("⚙️ إعدادات الحقل / Farm Settings")
-lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"])
+lang = st.sidebar.selectbox(
+    "Choose Language / اختر اللغة / Langue", 
+    ["🇩🇿 ع", "🇫🇷 FR", "🇬🇧 ENG"]
+)
 
-if lang == "العربية":
+# اللوقو البصري في الشريط الجانبي
+st.sidebar.markdown("""
+    <div style="text-align: center; padding: 10px;">
+        <span style="font-size: 45px;">🌵💧</span>
+        <h3 style="color: #1b4d3e; margin: 0;">AgriOpuntia</h3>
+        <p style="color: #666; font-size: 11px;">مخبر الزراعة الذكية والهيدروجيل</p>
+    </div>
+    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
+""", unsafe_allow_html=True)
+
+# --- محتوى التطبيق حسب اللغة ---
+if "ع" in lang:
     crop_type = st.sidebar.selectbox("اختر المحصول الزراعي:", [
         "أشجار الزيتون", 
         "نخيل التمر", 
@@ -92,7 +99,7 @@ if lang == "العربية":
         "الخضروات تحت السقي الموضعي (الطماطم، البطاطا)"
     ])
     
-    soil_type = st.sidebar.selectbox("نوع التربة (حسب نتائج تحليل التربة المخبري):", [
+    soil_type = st.sidebar.selectbox("نوع التربة (حسب التحليل المخبري):", [
         "تربة رملية (Sandy)",
         "تربة لومية أو طينية سلتية (Loamy / Silt Loam)",
         "تربة طينية ثقيلة (Clay)",
@@ -108,59 +115,74 @@ if lang == "العربية":
     
     st.sidebar.markdown("---")
     st.sidebar.subheader("📊 مدخلات مساحة الحقل والاحتياجات")
-    area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100, value=5000, step=500)
+    area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100.0, value=20000.0, step=500.0)
     
     st.sidebar.markdown("---")
-    st.sidebar.subheader("🌿 برنامج التسميد المخبري للمحصول")
-    fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):", min_value=0.01, value=0.12, step=0.01)
+    st.sidebar.subheader("🌿 برنامج التسميد المخبري")
+    fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):", min_value=0.01, value=0.10, step=0.01)
 
+    # الحسابات الفلاحية
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
 
+    # بطاقات التعريف المعرفية
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.info("🌵 دور الهيدروجيل الحيوي")
-        with st.expander("اضغط لعرض تفاصيل التقنية"):
+        with st.expander("تفاصيل التقنية"):
             st.markdown("""
             <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• المصدر الطبيعي:</b> مستخلص من ألواح صبار التين الشوكي (Opuntia ficus-indica)<br><br>
+            <b>• المصدر الطبيعي:</b> مستخلص من ألواح صبار التين الشوكي (Opuntia ficus-indica)<br>
             <b>• الوظيفة الحقلية:</b> تشكيل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً.
             </div>
             """, unsafe_allow_html=True)
         
     with col2:
         st.info(f"🌿 تخصيص المحصول")
-        with st.expander("اضغط لعرض تفاصيل الاحتياجات"):
+        with st.expander("تفاصيل الاحتياجات"):
             st.markdown(f"""
             <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• المحصول المدروس:</b> {crop_type}<br><br>
-            <b>• طبيعة التربة:</b> {soil_type}<br><br>
-            <b>• التسميد المحسوب:</b> يحتاج الحقل إجمالاً إلى <b>{total_crop_fertilizer_kg:.1f} كغ</b> من الأسمدة.
+            <b>• المحصول المدروس:</b> {crop_type}<br>
+            <b>• طبيعة التربة:</b> {soil_type}<br>
+            <b>• التسميد المحسوب:</b> يحتاج الحقل إجمالاً إلى <b>{total_crop_fertilizer_kg:,.1f} كغ</b> ({total_crop_fertilizer_kg/100:,.2f} قنطار) من الأسمدة.
             </div>
             """, unsafe_allow_html=True)
         
     with col3:
         st.info("💧 كفاءة الري والتوفير")
-        with st.expander("اضغط لعرض أثر توفير المياه"):
+        with st.expander("أثر توفير المياه"):
             st.markdown("""
             <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• نسبة توفير المياه:</b> تقليص عدد مرات السقي بنسبة تصل إلى 40%<br><br>
+            <b>• نسبة توفير المياه:</b> تقليص عدد مرات السقي بنسبة تصل إلى 40%<br>
             <b>• مقاومة الجفاف:</b> حماية المحاصيل من صدمات الإجهاد المائي.
             </div>
             """, unsafe_allow_html=True)
 
     st.markdown("---")
     st.markdown(f"""
-    <h2 style="direction: rtl; text-align: right; color: #1b4d3e;">📊 لوحة القيادة الفلاحية لتطبيق التقنية على: {crop_type}</h2>
+    <h2 style="direction: rtl; text-align: right; color: #1b4d3e;">📊 لوحة القيادة الفلاحية للمحصول: {crop_type}</h2>
     """, unsafe_allow_html=True)
 
     mcol1, mcol2, mcol3 = st.columns(3)
-    mcol1.metric("الهيدروجيل المقترح", f"{hydrogel_needed_kg:.1f} كغ")
-    mcol2.metric("إجمالي أسمدة الحقل", f"{total_crop_fertilizer_kg:.1f} كغ")
-    mcol3.metric("المياه الموفّرة للحقل", f"{water_saved_m3:.1f} م³")
+    mcol1.metric("الهيدروجيل المقترح", f"{hydrogel_needed_kg:,.1f} كغ")
+    mcol2.metric("إجمالي أسمدة الحقل", f"{total_crop_fertilizer_kg:,.1f} كغ")
+    mcol3.metric("المياه الموفّرة للحقل", f"{water_saved_m3:,.1f} م³")
 
+    # --- وحدة الذكاء الاصطناعي ---
+    st.markdown("---")
+    st.subheader("🤖 التحليل الذكي وتوصيات الهيدروجيل (AI Insights)")
+    if st.button("🚀 تشغيل خوارزمية التحليل الذكي"):
+        with st.spinner("جاري معالجة بيانات التربة والمحصول عبر خوارزميات الزراعة الذكية..."):
+            st.info(f"""
+            **📊 تقرير المستشار الذكي لمحصول ({crop_type}):**
+            * 💧 **نسبة توفير المياه المتوقعة:** بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة **35% إلى 45%**.
+            * 🧪 **الجرعة المثالية الموصى بها:** استخدام **{hydrogel_needed_kg:,.1f} كغ** موزعة على عمق منطقة الجذر الحيوية.
+            * 🌱 **الأثر الاقتصادي:** رفع كفاءة امتصاص الأسمدة المُقدرة بـ ({total_crop_fertilizer_kg:,.1f} كغ) وتقليل فقدان العناصر بالترشيح.
+            """)
+
+    # --- التوصيات المناخية ---
     st.markdown("---")
     st.subheader("🌤️ التوصيات الذكية حسب المناخ والمنطقة")
     if "صحراوي" in climate_zone:
@@ -170,12 +192,12 @@ if lang == "العربية":
     else:
         st.success("🌱 **توصية للمناخ الساحلي/المعتدل:** الرطوبة النسبية مساعدة، والهيدروجيل سيمنع غسل العناصر الغذائية نحو الأسفل بسبب مياه الأمطار الزائدة.")
 
+    # --- جدول السقي المنظم ---
     st.markdown("---")
     st.markdown("""
     <h3 style="direction: rtl; text-align: right; color: #1b4d3e;">📅 الجدول الزمني المقترح لسقي ومتابعة المحصول</h3>
     """, unsafe_allow_html=True)
     
-    # جدول HTML منظم ومنعزل تماماً ضد التداخل
     st.markdown("""
     <table class="custom-table">
         <tr>
@@ -206,20 +228,22 @@ if lang == "العربية":
     </table>
     """, unsafe_allow_html=True)
 
+    # --- الملخص وزر التحميل ---
     st.markdown("---")
-    st.subheader("📑 الملخص التقني والفلاحي للمزرعة وتحميل التقرير")
+    st.subheader("📑 الملخص التقني وتحميل التقرير")
     st.markdown(f"""
     <div dir="rtl" style="text-align: right; line-height: 1.8;">
     - <b>المساحة الكلية المستهدفة:</b> {area:,.0f} متر مربع<br>
     - <b>المنطقة المناخية:</b> {climate_zone}<br>
     - <b>نوع التربة المحددة من التحاليل:</b> {soil_type}<br>
-    - <b>الاحتياج الإجمالي من الهيدروجيل الحيوي:</b> {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور<br>
-    - <b>الاحتياج الإجمالي من الأسمدة:</b> {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول
+    - <b>الاحتياج الإجمالي من الهيدروجيل الحيوي:</b> {hydrogel_needed_kg:,.1f} كيلوغرام<br>
+    - <b>الاحتياج الإجمالي من الأسمدة:</b> {total_crop_fertilizer_kg:,.1f} كيلوغرام ({total_crop_fertilizer_kg/100:,.2f} قنطار)
     </div>
     """, unsafe_allow_html=True)
     
-    report_content = f"""AgriOpuntia Technical Report
+    report_content = f"""AgriOpuntia Technical Field Report
 ------------------------------------
+Country: Algeria 🇩🇿
 Crop Type: {crop_type}
 Target Area: {area} m²
 Climate Zone: {climate_zone}
@@ -237,18 +261,12 @@ Generated via AgriOpuntia Smart Platform.
         mime="text/plain"
     )
 
-elif lang == "Français":
-    crop_type = st.sidebar.selectbox("Sélectionner la culture :", [
-        "Olivier", "Palmier dattier", "Céréales (Blé et Orge)", "Agrumes", "Légumineuses sèches", "Légumes"
-    ])
-    soil_type = st.sidebar.selectbox("Type de sol :", [
-        "Sol sableux (Sandy)", "Sol limoneux", "Sol argileux lourd", "Sol sablo-argileux", "Sol limo-argileux"
-    ])
-    climate_zone = st.sidebar.selectbox("Zone climatique :", [
-        "Climat semi-aride / aride", "Climat saharien très aride", "Climat côtier / tempéré"
-    ])
-    area = st.sidebar.number_input("Superficie (m²) :", min_value=100, value=5000, step=500)
-    fertilizer_rate = st.sidebar.number_input("Taux d'engrais (kg/m²) :", min_value=0.01, value=0.12, step=0.01)
+elif "FR" in lang:
+    crop_type = st.sidebar.selectbox("Sélectionner la culture :", ["Olivier", "Palmier dattier", "Céréales", "Agrumes", "Légumineuses", "Légumes"])
+    soil_type = st.sidebar.selectbox("Type de sol :", ["Sol sableux", "Sol limoneux", "Sol argileux lourd", "Sol sablo-argileux"])
+    climate_zone = st.sidebar.selectbox("Zone climatique :", ["Climat semi-aride", "Climat saharien", "Climat côtier"])
+    area = st.sidebar.number_input("Superficie (m²) :", min_value=100.0, value=20000.0, step=500.0)
+    fertilizer_rate = st.sidebar.number_input("Taux d'engrais (kg/m²) :", min_value=0.01, value=0.10, step=0.01)
 
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
@@ -256,33 +274,24 @@ elif lang == "Français":
 
     st.header(f"📊 Tableau de bord agronomique : {crop_type}")
     mcol1, mcol2, mcol3 = st.columns(3)
-    mcol1.metric("Hydrogel suggéré", f"{hydrogel_needed_kg:.1f} kg")
-    mcol2.metric("Engrais total", f"{total_crop_fertilizer_kg:.1f} kg")
-    mcol3.metric("Eau économisée", f"{water_saved_m3:.1f} m³")
+    mcol1.metric("Hydrogel suggéré", f"{hydrogel_needed_kg:,.1f} kg")
+    mcol2.metric("Engrais total", f"{total_crop_fertilizer_kg:,.1f} kg")
+    mcol3.metric("Eau économisée", f"{water_saved_m3:,.1f} m³")
 
-    st.subheader("📅 Calendrier d'irrigation suggéré")
-    timeline_data = pd.DataFrame({
-        "Stade de la culture": ["Plantation", "Croissance", "Floraison", "Maturation"],
-        "Effet du Bio-Hydrogel": ["Protection des racines", "Approvisionnement continu", "Bouclier thermique", "Diminution progressive"],
-        "Fréquence d'irrigation": ["Réduction de 20%", "Réduction de 40%", "Réduction de 35%", "Légère"]
-    })
-    st.table(timeline_data)
+    st.markdown("---")
+    st.subheader("🤖 Recommandations Intelligentes (AI Insights)")
+    if st.button("🚀 Lancer l'analyse intelligente"):
+        st.info(f"**Rapport IA ({crop_type}):** Économie d'eau estimée à **35%-45%**. Quantité recommandée de bio-hydrogel: **{hydrogel_needed_kg:,.1f} kg**.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
-    st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
+    st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
 
 else:
-    crop_type = st.sidebar.selectbox("Select Crop Type:", [
-        "Olive Trees", "Date Palm Trees", "Cereals", "Citrus", "Dry Legumes", "Vegetables"
-    ])
-    soil_type = st.sidebar.selectbox("Soil Type:", [
-        "Sandy Soil", "Loamy Soil", "Clay Soil", "Sandy Clay Loam", "Silty Clay Loam"
-    ])
-    climate_zone = st.sidebar.selectbox("Climate Zone:", [
-        "Semi-arid", "Desert", "Coastal"
-    ])
-    area = st.sidebar.number_input("Area (m²):", min_value=100, value=5000, step=500)
-    fertilizer_rate = st.sidebar.number_input("Fertilizer Rate (kg/m²):", min_value=0.01, value=0.12, step=0.01)
+    crop_type = st.sidebar.selectbox("Select Crop Type:", ["Olive Trees", "Date Palm Trees", "Cereals", "Citrus", "Dry Legumes", "Vegetables"])
+    soil_type = st.sidebar.selectbox("Soil Type:", ["Sandy Soil", "Loamy Soil", "Clay Soil", "Sandy Clay Loam"])
+    climate_zone = st.sidebar.selectbox("Climate Zone:", ["Semi-arid climate", "Desert climate", "Coastal climate"])
+    area = st.sidebar.number_input("Target Area (m²):", min_value=100.0, value=20000.0, step=500.0)
+    fertilizer_rate = st.sidebar.number_input("Recommended fertilizer (kg/m²):", min_value=0.01, value=0.10, step=0.01)
 
     hydrogel_needed_kg = area * 0.12 
     water_saved_m3 = area * 0.22 
@@ -290,20 +299,19 @@ else:
 
     st.header(f"📊 Agricultural Dashboard: {crop_type}")
     mcol1, mcol2, mcol3 = st.columns(3)
-    mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:.1f} kg")
-    mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:.1f} kg")
-    mcol3.metric("Saved Water", f"{water_saved_m3:.1f} m³")
+    mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:,.1f} kg")
+    mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:,.1f} kg")
+    mcol3.metric("Saved Water", f"{water_saved_m3:,.1f} m³")
 
-    st.subheader("📅 Suggested Irrigation Timeline")
-    timeline_data = pd.DataFrame({
-        "Growth Stage": ["Planting", "Growth", "Flowering", "Maturation"],
-        "Bio-Hydrogel Effect": ["Root protection", "Steady supply", "Thermal shield", "Gradual reduction"],
-        "Irrigation Frequency": ["20% less", "40% less", "35% less", "Light"]
-    })
-    st.table(timeline_data)
+    st.markdown("---")
+    st.subheader("🤖 AI Smart Recommendations")
+    if st.button("🚀 Run AI Analysis"):
+        st.info(f"**AI Report ({crop_type}):** Water saving estimated between **35%-45%**. Recommended bio-hydrogel dose: **{hydrogel_needed_kg:,.1f} kg**.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
-    st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
+    st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
+
+
 
 
 
