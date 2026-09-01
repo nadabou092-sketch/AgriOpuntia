@@ -379,14 +379,30 @@ hydrogel_needed_kg = area * 0.12
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
 
-# --- عرض البطاقات الإحصائية التفاعلية (Expanders) ---
+# --- إضافة تنسيق CSS لتعديل طول الإطارات لتكون متساوية ---
+st.markdown("""
+    <style>
+    .streamlit-expanderHeader {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    div[data-testid="stExpander"] {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fafbfc;
+        min-height: 130px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# --- عرض البطاقات الإحصائية التفاعلية المتساوية ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
     with st.expander(f"🌵 {lang_data.get('card1_title', 'Rôle du Bio-Hydrogel')}", expanded=False):
         st.markdown(f"""
         - **Source:** Extrait naturel de figuier de barbarie.
-        - **Fonction:** Rétention d'eau et de nutriments autour des racines.
+        - **Fonction:** Rétention d'eau et de nutriments.
         """)
 
 with col2:
