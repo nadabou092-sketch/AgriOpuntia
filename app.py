@@ -488,7 +488,7 @@ report_content = (
     f"Crop: {crop_type}\n"
     f"Soil: {soil_type}\n"
     f"Area: {area} m²\n"
-    f"Hydrogel: {hydrogel_neede}")
+    f"Hydrogel: {hydrogel_needed}")
 
 
 
