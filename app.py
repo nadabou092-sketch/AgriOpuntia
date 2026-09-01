@@ -490,7 +490,10 @@ report_content = (
 
 st.download_button(
     label=lang_data['download_btn'],
-    data=
+    data=report_content,
+    file_name="AgriOpuntia_Report.txt",
+    mim="text/plain"
+)
 
 
 
