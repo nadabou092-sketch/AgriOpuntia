@@ -475,23 +475,6 @@ if show_ai_module:
             
             st.markdown(ai_reply)
             st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-
-    if user_prompt := st.chat_input(lang_data['chat_placeholder']):
-        st.session_state.messages.append({"role": "user", "content": user_prompt})
-        with st.chat_message("user"):
-            st.markdown(user_prompt)
-
-        with st.chat_message("assistant"):
-            if any(word in user_prompt.lower() for word in ["هيدروجيل", "hydrogel", "صبار", "opuntia", "ماء", "سقي", "رطوبة"]):
-                ai_reply = f"بخصوص استفسارك حول النشاط الفلاحي لـ **{crop_type}**، استخدام الهيدروجيل الحيوي المستخلص من صبار التين الشوكي في تربة مثل **{soil_type}** يساعد في خفض الاحتياجات المائية بحوالي 35-45%، مع الحفاظ على كفاءة امتصاص الأسمدة المحسوبة بـ **{total_crop_fertilizer_kg:,.1f} كغ**."
-            elif any(word in user_prompt.lower() for word in ["سماد", "fertilizer", "تسميد", "أسمدة"]):
-                ai_reply = f"كمية الأسمدة الموصى بها لمساحة **{area:,.0f} م²** الخاصة بـ **{crop_type}** تقدر بـ **{total_crop_fertilizer_kg:,.1f} كغ**. يُنصح دائماً بتوزيعها على دفعات لزيادة الكفاءة."
-            else:
-                ai_reply = f"أهلاً بكِ. بصفتي مساعدك الذكي في منصة **AgriOpuntia**، أنا هنا لمساعدتك في كل ما يتعلق بإدارة زراعة **{crop_type}**، تحسين مقاومة الجفاف، وتسيير الحقول بكفاءة عالية. تفضلي بطرح سؤالك الزراعي المحدد!"
-            
-            st.markdown(ai_reply)
-            st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-
 # --- 13. جدول المتابعة الزمني ---
 st.markdown("---")
 st.markdown(f'<h3 style="direction: {lang_data["dir"]}; text-align: {lang_data["align"]}; color: #1b4d3e;">📅 {lang_data["table_header"]}</h3>', unsafe_allow_html=True)
