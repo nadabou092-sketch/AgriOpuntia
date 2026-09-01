@@ -73,7 +73,6 @@ st.markdown("""
 # --- القائمة الجانبية (Sidebar) ---
 st.sidebar.title("⚙️ الإعدادات / Settings")
 
-# إرجاع اللغات كما كانت بالاسم العادي
 lang = st.sidebar.selectbox(
     "Choose Language / اختر اللغة / Langue", 
     ["العربية", "Français", "English"]
@@ -161,17 +160,26 @@ if lang == "العربية":
     mcol2.metric("إجمالي أسمدة الحقل", f"{total_crop_fertilizer_kg:,.1f} كغ")
     mcol3.metric("المياه الموفّرة للحقل", f"{water_saved_m3:,.1f} م³")
 
-    # --- وحدة الذكاء الاصطناعي ---
+    # --- وحدة الذكاء الاصطناعي (على شكل زر أو رمز يضغط عليه الفلاح) ---
     st.markdown("---")
-    st.subheader("🤖 التحليل الذكي وتوصيات الهيدروجيل (AI Insights)")
-    if st.button("🚀 تشغيل خوارزمية التحليل الذكي"):
-        with st.spinner("جاري معالجة بيانات التربة والمحصول عبر خوارزميات الزراعة الذكية..."):
-            st.info(f"""
-            **📊 تقرير المستشار الذكي لمحصول ({crop_type}):**
-            * 💧 **نسبة توفير المياه المتوقعة:** بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة **35% إلى 45%**.
-            * 🧪 **الجرعة المثالية الموصى بها:** استخدام **{hydrogel_needed_kg:,.1f} كغ** موزعة على عمق منطقة الجذر الحيوية.
-            * 🌱 **الأثر الاقتصادي:** رفع كفاءة امتصاص الأسمدة المُقدرة بـ ({total_crop_fertilizer_kg:,.1f} كغ) وتقليل فقدان العناصر بالترشيح.
-            """)
+    
+    # استخدام استعراض تفاعلي (Popover) يفتح عند الضغط على الزر لتبقى الواجهة نظيفة
+    ai_col1, ai_col2 = st.columns([4, 1])
+    with ai_col1:
+        st.subheader("🤖 التحليل الذكي وتوصيات الهيدروجيل (AI Insights)")
+    with ai_col2:
+        pass
+
+    # زر منبثق يضغط عليه الفلاح لعرض التقرير الذكي
+    with st.popover("💡 اضغط هنا لعرض تقرير المستشار الذكي"):
+        st.markdown(f"""
+        <div dir="rtl" style="text-align: right; line-height: 1.8;">
+        <b>📊 تقرير المستشار الذكي لمحصول ({crop_type}):</b><br>
+        • 💧 <b>نسبة توفير المياه المتوقعة:</b> بفضل استجابة الهيدروجيل الحيوي المستخلص من الصبار، يُتوقع تقليل استهلاك مياه السقي بنسبة <b>35% إلى 45%</b>.<br>
+        • 🧪 <b>الجرعة المثالية الموصى بها:</b> استخدام <b>{hydrogel_needed_kg:,.1f} كغ</b> موزعة على عمق منطقة الجذر الحيوية.<br>
+        • 🌱 <b>الأثر الاقتصادي:</b> رفع كفاءة امتصاص الأسمدة المُقدرة بـ ({total_crop_fertilizer_kg:,.1f} كغ) وتقليل فقدان العناصر بالترشيح.
+        </div>
+        """, unsafe_allow_html=True)
 
     # --- التوصيات المناخية ---
     st.markdown("---")
@@ -271,7 +279,7 @@ elif lang == "Français":
 
     st.markdown("---")
     st.subheader("🤖 Recommandations Intelligentes (AI Insights)")
-    if st.button("🚀 Lancer l'analyse intelligente"):
+    with st.popover("💡 Afficher le rapport IA"):
         st.info(f"**Rapport IA ({crop_type}):** Économie d'eau estimée à **35%-45%**. Quantité recommandée de bio-hydrogel: **{hydrogel_needed_kg:,.1f} kg**.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
@@ -296,11 +304,13 @@ else:
 
     st.markdown("---")
     st.subheader("🤖 AI Smart Recommendations")
-    if st.button("🚀 Run AI Analysis"):
+    with st.popover("💡 Show AI Report"):
         st.info(f"**AI Report ({crop_type}):** Water saving estimated between **35%-45%**. Recommended bio-hydrogel dose: **{hydrogel_needed_kg:,.1f} kg**.")
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
+
+
 
 
 
