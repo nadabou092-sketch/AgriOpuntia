@@ -8,11 +8,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- القائمة الجانبية لإدارة اللغة مع إعادة تحميل فورية ---
-st.sidebar.title("⚙️ الإعدادات / Settings")
-
+# --- إدارة الحالة الأولية للغة ---
 if 'lang_choice' not in st.session_state:
     st.session_state.lang_choice = "العربية"
+
+# --- القائمة الجانبية لإدارة اللغة ---
+st.sidebar.title("⚙️ الإعدادات / Settings")
 
 lang = st.sidebar.selectbox(
     "Choose Language / اختر اللغة / Langue", 
@@ -39,11 +40,11 @@ t = {
             "vegetables": "الخضروات تحت السقي الموضعي (الطماطم، البطاطا)"
         },
         "soils": {
-            "sandy": "تربة رملية (Sandy)",
-            "loamy": "تربة لومية أو طينية سلتية (Loamy / Silt Loam)",
-            "clay": "تربة طينية ثقيلة (Clay)",
-            "sandy_clay": "تربة رملية طينية (Sandy Clay Loam)",
-            "silty_clay": "تربة غرينية طينية (Silty Clay Loam)"
+            "sandy": "تربة رملية - Sandy",
+            "loamy": "تربة لومية أو طينية سلتية - Loamy",
+            "clay": "تربة طينية ثقيلة - Clay",
+            "sandy_clay": "تربة رملية طينية - Sandy Clay",
+            "silty_clay": "تربة غرينية طينية - Silty Clay"
         },
         "climates": {
             "semi_arid": "مناخ شبه جاف / جاف (حار صيفاً ومتقلب)",
@@ -72,7 +73,7 @@ t = {
         "ai_dose": "الجرعة المقترحة:",
         "ai_fert": "كفاءة الأسمدة:",
         "climate_header": "التوصيات الذكية حسب المناخ والمنطقة",
-        "climate_success": "تم تطبيق التعديلات المناخية بنجاح على معايير منطقتك المختارة.",
+        "climate_success": "تم تطبيق التعديلات المناخية بنجاح على معايير منطقتك المختارة:",
         "table_header": "الجدول الزمني المقترح لسقي ومتابعة المحصول",
         "table_cols": ["مرحلة نمو المحصول", "تأثير الهيدروجيل الحيوي", "تواتر الري الموصى به"],
         "table_rows": [
@@ -131,7 +132,7 @@ t = {
         "ai_dose": "Dose suggérée :",
         "ai_fert": "Efficacité des engrais :",
         "climate_header": "Recommandations Climatiques",
-        "climate_success": "Adaptations climatiques appliquées avec succès à vos paramètres régionaux.",
+        "climate_success": "Adaptations climatiques appliquées avec succès à vos paramètres régionaux :",
         "table_header": "Calendrier d'irrigation et de suivi",
         "table_cols": ["Phase de culture", "Effet du Bio-Hydrogel", "Fréquence d'irrigation"],
         "table_rows": [
@@ -190,7 +191,7 @@ t = {
         "ai_dose": "Recommended Dose:",
         "ai_fert": "Fertilizer Efficiency:",
         "climate_header": "Climate Recommendations",
-        "climate_success": "Custom climate adaptations applied successfully to your selected regional parameters.",
+        "climate_success": "Custom climate adaptations applied successfully to your selected regional parameters:",
         "table_header": "Proposed Irrigation & Monitoring Schedule",
         "table_cols": ["Crop Growth Stage", "Bio-Hydrogel Effect", "Recommended Irrigation"],
         "table_rows": [
@@ -208,12 +209,9 @@ t = {
 
 lang_data = t[lang]
 
-# --- تنسيق CSS عام ---
+# --- تنسيق CSS الثابت ---
 st.markdown(f"""
 <style>
-    .stApp {{
-        direction: {lang_data['dir']};
-    }}
     .main-header {{
         background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
         padding: 22px;
@@ -281,6 +279,7 @@ st.markdown(f"""
         margin-bottom: 8px;
         color: #2c3e50;
         font-size: 0.95rem;
+        unicode-bidi: plaintext;
     }}
     .climate-box {{
         background-color: #eafaf1;
@@ -294,6 +293,7 @@ st.markdown(f"""
         color: #1e8449;
         font-weight: 600;
         box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        unicode-bidi: plaintext;
     }}
     .custom-table {{
         width: 100%;
@@ -333,7 +333,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مدخلات القائمة الجانبية ---
+# --- مدخلات القائمة الجانبية (بمفاتيح ثابتة ومستقرة تماماً) ---
 crop_key = st.sidebar.selectbox(
     lang_data['crop_label'], 
     options=list(lang_data['crops'].keys()), 
@@ -359,18 +359,30 @@ climate_key = st.sidebar.selectbox(
 climate_zone = lang_data['climates'][climate_key]
 
 st.sidebar.markdown("---")
-area = st.sidebar.number_input(lang_data['area_label'], min_value=100.0, value=20000.0, step=500.0, key="input_area")
+area = st.sidebar.number_input(
+    lang_data['area_label'], 
+    min_value=100.0, 
+    value=20000.0, 
+    step=500.0, 
+    key="input_area"
+)
 
 st.sidebar.markdown("---")
-fertilizer_rate = st.sidebar.number_input(lang_data['fert_label'], min_value=0.01, value=0.10, step=0.01, key="input_fert")
+fertilizer_rate = st.sidebar.number_input(
+    lang_data['fert_label'], 
+    min_value=0.01, 
+    value=0.10, 
+    step=0.01, 
+    key="input_fert"
+)
 
-# --- الخيارات في أسفل القائمة الجانبية لمنع الاكتظاظ ---
+# --- خيارات العرض والتحليل في القائمة الجانبية ---
 st.sidebar.markdown("---")
 st.sidebar.markdown(f"**{lang_data['sidebar_options_header']}**")
-show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=False, key="chk_ai_insights")
-show_climate_recs = st.sidebar.checkbox(lang_data['show_climate'], value=False, key="chk_climate_recs")
+show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=True, key="chk_ai_insights")
+show_climate_recs = st.sidebar.checkbox(lang_data['show_climate'], value=True, key="chk_climate_recs")
 
-# --- الحسابات العلمية ---
+# --- الحسابات العلمية الدقيقة ---
 hydrogel_needed_kg = area * 0.12 
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
@@ -418,27 +430,27 @@ mcol1.metric(lang_data['m1'], f"{hydrogel_needed_kg:,.1f} kg" if lang != "الع
 mcol2.metric(lang_data['m2'], f"{total_crop_fertilizer_kg:,.1f} kg" if lang != "العربية" else f"{total_crop_fertilizer_kg:,.1f} كغ")
 mcol3.metric(lang_data['m3'], f"{water_saved_m3:,.1f} m³")
 
-# --- التحليل الذكي (يظهر فقط عند التأشير عليه من القائمة الجانبية) ---
+# --- التحليل الذكي ---
 if show_ai_insights:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
     st.markdown(f"""
     <div class="custom-box">
         <ul>
-            <li>💧 <b>{lang_data['ai_water']}</b> 35% - 45%</li>
-            <li>🧪 <b>{lang_data['ai_dose']}</b> {hydrogel_needed_kg:,.1f} kg</li>
-            <li>🌱 <b>{lang_data['ai_fert']}</b> {total_crop_fertilizer_kg:,.1f} kg</li>
+            <li>💧 <b>{lang_data['ai_water']}</b> <span dir="ltr">35% - 45%</span></li>
+            <li>🧪 <b>{lang_data['ai_dose']}</b> <span dir="ltr">{hydrogel_needed_kg:,.1f} kg</span></li>
+            <li>🌱 <b>{lang_data['ai_fert']}</b> <span dir="ltr">{total_crop_fertilizer_kg:,.1f} kg</span></li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
 
-# --- التوصيات المناخية (تظهر فقط عند التأشير عليها من القائمة الجانبية) ---
+# --- التوصيات المناخية (مرتبطة تماماً بحالة الزر في الشريط الجانبي) ---
 if show_climate_recs:
     st.markdown("---")
     st.subheader(f"🌤️ {lang_data['climate_header']}")
     st.markdown(f"""
-    <div class="climate-box">
-        ✅ {lang_data['climate_success']} ({climate_zone})
+    <div class="climate-box" dir="auto">
+        ✅ {lang_data['climate_success']} <span dir="auto">({climate_zone})</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -471,6 +483,8 @@ st.download_button(
     file_name="AgriOpuntia_Report.txt",
     mime="text/plain"
 )
+
+
 
 
 
