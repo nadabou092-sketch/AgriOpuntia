@@ -484,9 +484,10 @@ st.markdown("---")
 st.subheader("📄 التقرير الفني وتحميل التقرير")
 
 part1 = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_type}"
-report_content = part1 + f"\nArea: {area} m²\nFertilizer: {fertilizer:.1f} kg"
-st.text_area("محتوى التقرير:", report_content, height=150)
-
+line1 = "AgriOpuntia Technical Report"
+line2 = f"Crop: {crop_type} | Soil: {soil_type}"
+line3 = f"Area: {area} m2 | Fertilizer: {fertilizer:.1f} kg"
+report_content = line1 + "\n" + line2 + "\n" + line3
 st.download_button(
     label="📥 تحميل التقرير (TXT)",
     data=report_content,
