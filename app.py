@@ -8,6 +8,14 @@ st.set_page_config(
     layout="wide"
 )
 
+# 1. تهيئة القيم الافتراضية في st.session_state لمنع ضياعها عند تغيير اللغة
+if "lang" not in st.session_state:
+    st.session_state.lang = "العربية"
+if "area" not in st.session_state:
+    st.session_state.area = 5000.0
+if "fertilizer_rate" not in st.session_state:
+    st.session_state.fertilizer_rate = 0.12
+
 # تنسيق CSS مخصص للواجهة والجدول لتجنب أي تداخل
 st.markdown("""
 <style>
@@ -78,48 +86,33 @@ st.markdown("""
 
 st.markdown("---")
 
-# القائمة الجانبية للإعدادات واللغة
+# القائمة الجانبية للإعدادات واللغة مع ربطها بـ session_state عبر key
 st.sidebar.title("⚙️ إعدادات الحقل / Farm Settings")
-lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"])
+lang = st.sidebar.selectbox("Choose Language / اختر اللغة / Langue", ["العربية", "Français", "English"], key="lang")
+
+# مدخلات عامة ثابتة في السايدبار مع استخدام keys لمنع تصفيرها
+area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100, value=5000.0, step=500.0, key="area")
+fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها للمتر المربع (كغ/م²):", min_value=0.01, value=0.12, step=0.01, key="fertilizer_rate")
+
+# حسابات مشتركة ثابتة
+hydrogel_needed_kg = area * 0.12 
+water_saved_m3 = area * 0.22 
+total_crop_fertilizer_kg = area * fertilizer_rate 
 
 if lang == "العربية":
     crop_type = st.sidebar.selectbox("اختر المحصول الزراعي:", [
-        "أشجار الزيتون", 
-        "نخيل التمر", 
-        "الحبوب (القمح والشعير)", 
-        "الحمضيات (البرتقال والليمون)", 
-        "البقوليات الجافة (الفول، الحمص، الجلبانة)", 
-        "الخضروات تحت السقي الموضعي (الطماطم، البطاطا)"
-    ])
+        "أشجار الزيتون", "نخيل التمر", "الحبوب (القمح والشعير)", "الحمضيات (البرتقال والليمون)", "البقوليات الجافة", "الخضروات تحت السقي الموضعي"
+    ], key="crop_ar")
     
-    soil_type = st.sidebar.selectbox("نوع التربة (حسب نتائج تحليل التربة المخبري):", [
-        "تربة رملية (Sandy)",
-        "تربة لومية أو طينية سلتية (Loamy / Silt Loam)",
-        "تربة طينية ثقيلة (Clay)",
-        "تربة رملية طينية (Sandy Clay Loam)",
-        "تربة غرينية طينية (Silty Clay Loam)"
-    ])
+    soil_type = st.sidebar.selectbox("نوع التربة (حسب تحليل التربة):", [
+        "تربة رملية (Sandy)", "تربة لومية أو طينية سلتية", "تربة طينية ثقيلة (Clay)", "تربة رملية طينية", "تربة غرينية طينية"
+    ], key="soil_ar")
     
     climate_zone = st.sidebar.selectbox("المنطقة المناخية للمزرعة:", [
-        "مناخ شبه جاف / جاف (حار صيفاً ومتقلب)",
-        "مناخ صحراوي جاف جداً (شديد الحرارة وقليل الأمطار)",
-        "مناخ ساحلي / معتدل (رطوبة نسبية ومعتدل الحرارة)"
-    ])
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("📊 مدخلات مساحة الحقل والاحتياجات")
-    area = st.sidebar.number_input("مساحة الحقل المستهدف (بالمتر المربع م²):", min_value=100, value=5000, step=500)
-    
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("🌿 برنامج التسميد المخبري للمحصول")
-    fertilizer_rate = st.sidebar.number_input("كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):", min_value=0.01, value=0.12, step=0.01)
-
-    hydrogel_needed_kg = area * 0.12 
-    water_saved_m3 = area * 0.22 
-    total_crop_fertilizer_kg = area * fertilizer_rate 
+        "مناخ شبه جاف / جاف (حار صيفاً ومتقلب)", "مناخ صحراوي جاف جداً", "مناخ ساحلي / معتدل"
+    ], key="climate_ar")
 
     col1, col2, col3 = st.columns(3)
-    
     with col1:
         st.info("🌵 دور الهيدروجيل الحيوي")
         with st.expander("اضغط لعرض تفاصيل التقنية"):
@@ -131,7 +124,7 @@ if lang == "العربية":
             """, unsafe_allow_html=True)
         
     with col2:
-        st.info(f"🌿 تخصيص المحصول")
+        st.info("🌿 تخصيص المحصول")
         with st.expander("اضغط لعرض تفاصيل الاحتياجات"):
             st.markdown(f"""
             <div dir="rtl" style="text-align: right; line-height: 1.8;">
@@ -175,7 +168,6 @@ if lang == "العربية":
     <h3 style="direction: rtl; text-align: right; color: #1b4d3e;">📅 الجدول الزمني المقترح لسقي ومتابعة المحصول</h3>
     """, unsafe_allow_html=True)
     
-    # جدول HTML منظم ومنعزل تماماً ضد التداخل
     st.markdown("""
     <table class="custom-table">
         <tr>
@@ -206,18 +198,6 @@ if lang == "العربية":
     </table>
     """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.subheader("📑 الملخص التقني والفلاحي للمزرعة وتحميل التقرير")
-    st.markdown(f"""
-    <div dir="rtl" style="text-align: right; line-height: 1.8;">
-    - <b>المساحة الكلية المستهدفة:</b> {area:,.0f} متر مربع<br>
-    - <b>المنطقة المناخية:</b> {climate_zone}<br>
-    - <b>نوع التربة المحددة من التحاليل:</b> {soil_type}<br>
-    - <b>الاحتياج الإجمالي من الهيدروجيل الحيوي:</b> {hydrogel_needed_kg:.1f} كيلوغرام لحماية الجذور<br>
-    - <b>الاحتياج الإجمالي من الأسمدة:</b> {total_crop_fertilizer_kg:.1f} كيلوغرام لضمان التغذية المثلى للمحصول
-    </div>
-    """, unsafe_allow_html=True)
-    
     report_content = f"""AgriOpuntia Technical Report
 ------------------------------------
 Crop Type: {crop_type}
@@ -238,21 +218,9 @@ Generated via AgriOpuntia Smart Platform.
     )
 
 elif lang == "Français":
-    crop_type = st.sidebar.selectbox("Sélectionner la culture :", [
-        "Olivier", "Palmier dattier", "Céréales (Blé et Orge)", "Agrumes", "Légumineuses sèches", "Légumes"
-    ])
-    soil_type = st.sidebar.selectbox("Type de sol :", [
-        "Sol sableux (Sandy)", "Sol limoneux", "Sol argileux lourd", "Sol sablo-argileux", "Sol limo-argileux"
-    ])
-    climate_zone = st.sidebar.selectbox("Zone climatique :", [
-        "Climat semi-aride / aride", "Climat saharien très aride", "Climat côtier / tempéré"
-    ])
-    area = st.sidebar.number_input("Superficie (m²) :", min_value=100, value=5000, step=500)
-    fertilizer_rate = st.sidebar.number_input("Taux d'engrais (kg/m²) :", min_value=0.01, value=0.12, step=0.01)
-
-    hydrogel_needed_kg = area * 0.12 
-    water_saved_m3 = area * 0.22 
-    total_crop_fertilizer_kg = area * fertilizer_rate 
+    crop_type = st.sidebar.selectbox("Sélectionner la culture :", ["Olivier", "Palmier dattier", "Céréales", "Agrumes"], key="crop_fr")
+    soil_type = st.sidebar.selectbox("Type de sol :", ["Sol sableux", "Sol limoneux", "Sol argileux lourd"], key="soil_fr")
+    climate_zone = st.sidebar.selectbox("Zone climatique :", ["Climat semi-aride", "Climat saharien", "Climat côtier"], key="climate_fr")
 
     st.header(f"📊 Tableau de bord agronomique : {crop_type}")
     mcol1, mcol2, mcol3 = st.columns(3)
@@ -272,24 +240,12 @@ elif lang == "Français":
     st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
 
 else:
-    crop_type = st.sidebar.selectbox("Select Crop Type:", [
-        "Olive Trees", "Date Palm Trees", "Cereals", "Citrus", "Dry Legumes", "Vegetables"
-    ])
-    soil_type = st.sidebar.selectbox("Soil Type:", [
-        "Sandy Soil", "Loamy Soil", "Clay Soil", "Sandy Clay Loam", "Silty Clay Loam"
-    ])
-    climate_zone = st.sidebar.selectbox("Climate Zone:", [
-        "Semi-arid", "Desert", "Coastal"
-    ])
-    area = st.sidebar.number_input("Area (m²):", min_value=100, value=5000, step=500)
-    fertilizer_rate = st.sidebar.number_input("Fertilizer Rate (kg/m²):", min_value=0.01, value=0.12, step=0.01)
-
-    hydrogel_needed_kg = area * 0.12 
-    water_saved_m3 = area * 0.22 
-    total_crop_fertilizer_kg = area * fertilizer_rate 
+    crop_type = st.sidebar.selectbox("Select Crop Type:", ["Olive Trees", "Date Palm Trees", "Cereals", "Citrus"], key="crop_en")
+    soil_type = st.sidebar.selectbox("Soil Type:", ["Sandy Soil", "Loamy Soil", "Clay Soil"], key="soil_en")
+    climate_zone = st.sidebar.selectbox("Climate Zone:", ["Semi-arid", "Desert", "Coastal"], key="climate_en")
 
     st.header(f"📊 Agricultural Dashboard: {crop_type}")
-    mcol1, mcol2, mcol3 = st.columns(3)
+    mcol1, mcol2, mcol3 = st.columns3() if hasattr(st, 'columns3') else st.columns(3)
     mcol1.metric("Suggested Hydrogel", f"{hydrogel_needed_kg:.1f} kg")
     mcol2.metric("Total Fertilizer", f"{total_crop_fertilizer_kg:.1f} kg")
     mcol3.metric("Saved Water", f"{water_saved_m3:.1f} m³")
@@ -304,6 +260,8 @@ else:
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Report", report_content, file_name="report.txt", mime="text/plain")
+
+
 
 
 
