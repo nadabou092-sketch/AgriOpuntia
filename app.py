@@ -162,7 +162,7 @@ if show_ai_module:
             
             st.markdown(ai_reply)
             st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-)
+
 
 
 
