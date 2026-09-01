@@ -16,7 +16,7 @@ lang = st.sidebar.selectbox(
     key="language_selector"
 )
 
-# --- قواميس الترجمة والمفاتيح الثابتة (حتى لا تضيع البيانات أبداً عند تبديل اللغة) ---
+# --- قواميس الترجمة والمفاتيح الثابتة (نصوص نظيفة لكل لغة لتجنب تداخل الحروف) ---
 t = {
     "العربية": {
         "title": "AgriOpuntia 🇩🇿",
@@ -59,7 +59,11 @@ t = {
         "m2": "إجمالي أسمدة الحقل",
         "m3": "المياه الموفّرة للحقل",
         "ai_header": "التحليل الذكي وتوصيات الهيدروجيل (AI Insights)",
+        "ai_water": "توفير المياه:",
+        "ai_dose": "الجرعة المقترحة:",
+        "ai_fert": "كفاءة الأسمدة:",
         "climate_header": "التوصيات الذكية حسب المناخ والمنطقة",
+        "climate_success": "تم تطبيق التعديلات المناخية بنجاح على معايير منطقتك المختارة.",
         "table_header": "الجدول الزمني المقترح لسقي ومتابعة المحصول",
         "table_cols": ["مرحلة نمو المحصول", "تأثير الهيدروجيل الحيوي", "تواتر الري الموصى به"],
         "table_rows": [
@@ -114,7 +118,11 @@ t = {
         "m2": "Engrais total",
         "m3": "Eau économisée",
         "ai_header": "Recommandations Intelligentes (AI Insights)",
+        "ai_water": "Économie d'eau:",
+        "ai_dose": "Dose suggérée:",
+        "ai_fert": "Efficacité des engrais:",
         "climate_header": "Recommandations Climatiques",
+        "climate_success": "Adaptations climatiques appliquées avec succès à vos paramètres régionaux.",
         "table_header": "Calendrier d'irrigation et de suivi",
         "table_cols": ["Phase de culture", "Effet du Bio-Hydrogel", "Fréquence d'irrigation"],
         "table_rows": [
@@ -169,7 +177,11 @@ t = {
         "m2": "Total Fertilizer",
         "m3": "Saved Water",
         "ai_header": "AI Smart Recommendations",
+        "ai_water": "Water Savings:",
+        "ai_dose": "Recommended Dose:",
+        "ai_fert": "Fertilizer Efficiency:",
         "climate_header": "Climate Recommendations",
+        "climate_success": "Custom climate adaptations applied successfully to your selected regional parameters.",
         "table_header": "Proposed Irrigation & Monitoring Schedule",
         "table_cols": ["Crop Growth Stage", "Bio-Hydrogel Effect", "Recommended Irrigation"],
         "table_rows": [
@@ -187,7 +199,7 @@ t = {
 
 lang_data = t[lang]
 
-# --- تنسيق CSS عام للتطبيق وتوحيد الأطوال ---
+# --- تنسيق CSS عام للتطبيق ---
 st.markdown(f"""
 <style>
     .main-header {{
@@ -216,7 +228,7 @@ st.markdown(f"""
         border: 1px solid #e0e0e0;
         border-radius: 12px;
         padding: 18px;
-        height: 210px; /* توحيد الطول والارتفاع بدقة */
+        height: 210px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         direction: {lang_data['dir']};
         text-align: {lang_data['align']};
@@ -276,7 +288,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مدخلات القائمة الجانبية بمفاتيح ثابتة (Stable Keys) لمنع ضياع البيانات ---
+# --- مدخلات القائمة الجانبية بمفاتيح ثابتة ---
 crop_key = st.sidebar.selectbox(
     lang_data['crop_label'], 
     options=list(lang_data['crops'].keys()), 
@@ -359,20 +371,20 @@ mcol1.metric(lang_data['m1'], f"{hydrogel_needed_kg:,.1f} kg" if lang != "الع
 mcol2.metric(lang_data['m2'], f"{total_crop_fertilizer_kg:,.1f} kg" if lang != "العربية" else f"{total_crop_fertilizer_kg:,.1f} كغ")
 mcol3.metric(lang_data['m3'], f"{water_saved_m3:,.1f} m³")
 
-# --- التحليل الذكي حسب التفعيل ---
+# --- التحليل الذكي حسب التفعيل (تم تصحيح النصوص لتكون بلغة واحدة نظيفة) ---
 if show_ai_insights:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
     st.info(f"""
-    * 💧 **Water Savings / توفير المياه:** 35% - 45%
-    * 🧪 **Recommended Dose / الجرعة المقترحة:** **{hydrogel_needed_kg:,.1f} kg**
-    * 🌱 **Fertilizer Efficiency / كفاءة الأسمدة:** {total_crop_fertilizer_kg:,.1f} kg
+    * 💧 **{lang_data['ai_water']}** 35% - 45%
+    * 🧪 **{lang_data['ai_dose']}** **{hydrogel_needed_kg:,.1f} kg**
+    * 🌱 **{lang_data['ai_fert']}** {total_crop_fertilizer_kg:,.1f} kg
     """)
 
 if show_climate_recs:
     st.markdown("---")
     st.subheader(f"🌤️ {lang_data['climate_header']}")
-    st.success("Custom climate adaptations applied successfully to your selected regional parameters.")
+    st.success(lang_data['climate_success'])
 
 # --- جدول المتابعة ---
 st.markdown("---")
@@ -403,6 +415,8 @@ st.download_button(
     file_name="AgriOpuntia_Report.txt",
     mime="text/plain"
 )
+
+
 
 
 
