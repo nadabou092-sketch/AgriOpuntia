@@ -395,14 +395,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- عرض البطاقات الإحصائية التفاعلية (Expanders) ---
+# --- تنسيق خفيف وأنيق للإطارات ---
+st.markdown("""
+    <style>
+    div[data-testid="stExpander"] {
+        background-color: #fcfcfc;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# --- عرض البطاقات الإحصائية التفاعلية ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
     with st.expander(f"🌵 {lang_data.get('card1_title', 'Rôle du Bio-Hydrogel')}", expanded=False):
         st.markdown(f"""
         - **Source:** Extrait naturel de figuier de barbarie.
-        - **Fonction:** Rétention d'eau et de nutriments autour des racines.
+        - **Fonction:** Rétention d'eau et de nutriments.
         """)
 
 with col2:
