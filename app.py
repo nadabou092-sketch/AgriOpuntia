@@ -482,7 +482,7 @@ st.markdown(f"""
 # --- التقرير والتحميل ---
 st.markdown("---")
 st.subheader(f"📑 {lang_data['report_header']}")
-ai_reply = f"Pour {crop_type} sur {area} m² ({soil_type}), la quantité d'engrais est fs de {fertilizer:.1f} kg."
+ai_reply = f"Pour {crop_type} sur {area} m² ({soil_type}), la quantité d'engrais est de {fertilizer:.1f} kg."
 st.markdown(ai_reply)
 st.session_state.messages.append({"role": "assistant", "content": ai_reply})
 
