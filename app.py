@@ -565,4 +565,3 @@ report_content = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_
 
 
 
-
