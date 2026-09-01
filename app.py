@@ -379,39 +379,30 @@ hydrogel_needed_kg = area * 0.12
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
 
-# --- 9. البطاقات التثقيفية الثلاث ---
+# --- عرض البطاقات الإحصائية التفاعلية (Expanders) ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown(f"""
-    <div class="feature-card">
-        <h4>{lang_data['card1_title']}</h4>
-        <p>{lang_data['card1_text']}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
+    with st.expander(f"🌵 {lang_data.get('card1_title', 'Rôle du Bio-Hydrogel')}", expanded=False):
+        st.markdown(f"""
+        - **Source:** Extrait naturel de figuier de barbarie.
+        - **Fonction:** Rétention d'eau et de nutriments autour des racines.
+        """)
+
 with col2:
-    if lang == "العربية":
-        card2_text = f"<b>• المحصول:</b> {crop_type}<br><b>• التربة:</b> {soil_type}<br><b>• الأسمدة:</b> <b>{total_crop_fertilizer_kg:,.1f} كغ</b>"
-    elif lang == "Français":
-        card2_text = f"<b>• Culture:</b> {crop_type}<br><b>• Sol:</b> {soil_type}<br><b>• Engrais total:</b> <b>{total_crop_fertilizer_kg:,.1f} kg</b>"
-    else:
-        card2_text = f"<b>• Crop:</b> {crop_type}<br><b>• Soil:</b> {soil_type}<br><b>• Total Fertilizer:</b> <b>{total_crop_fertilizer_kg:,.1f} kg</b>"
-        
-    st.markdown(f"""
-    <div class="feature-card">
-        <h4>{lang_data['card2_title']}</h4>
-        <p>{card2_text}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
+    with st.expander(f"🌿 {lang_data.get('card2_title', 'Culture & Sol')}", expanded=False):
+        st.markdown(f"""
+        - **Culture:** {crop_type}
+        - **Sol:** {soil_type}
+        - **Engrais total:** {total_crop_fertilizer_kg:,.1f} kg
+        """)
+
 with col3:
-    st.markdown(f"""
-    <div class="feature-card">
-        <h4>{lang_data['card3_title']}</h4>
-        <p>{lang_data['card3_text']}</p>
-    </div>
-    """, unsafe_allow_html=True)
+    with st.expander(f"💧 {lang_data.get('card3_title', "Efficacité d'Irrigation")}", expanded=False):
+        st.markdown(f"""
+        - **Économie d'eau:** Réduction jusqu'à 40%.
+        - **Résistance:** Protection contre le stress hydrique.
+        """)
 
 # --- 10. لوحة المؤشرات (Metrics Dashboard) ---
 st.markdown("---")
