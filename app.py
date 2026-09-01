@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 2. تهيئة حالات الجلسة (Session State) لضمان عدم ضياع البيانات ---
+# --- 2. تهيئة حالات الجلسة (Session State) ---
 if 'lang_choice' not in st.session_state:
     st.session_state.lang_choice = "العربية"
 
@@ -489,7 +489,9 @@ report_content = (
 )
 
 st.download_button(
-    label=lang_data['hydrogel_needed'])
+    label=lang_data['download_btn'],
+    data=
+
 
 
 
