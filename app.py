@@ -484,7 +484,7 @@ st.markdown("---")
 st.subheader(f"📑 {lang_data['report_header']}")
 report_content = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg\nFertilizer: {total_crop_f
 
-
+                                                                                                                                                            )
 
 
 
