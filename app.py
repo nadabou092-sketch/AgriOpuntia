@@ -8,11 +8,14 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- إدارة الحالة الأولية للغة ---
+# --- إدارة الحالة الأولية للغة والمحادثة ---
 if 'lang_choice' not in st.session_state:
     st.session_state.lang_choice = "العربية"
 
-# --- القائمة الجانبية لإدارة اللغة ---
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+
+# --- القائمة الجانبية لإدارة اللغة والإعدادات ---
 st.sidebar.title("⚙️ الإعدادات / Settings")
 
 lang = st.sidebar.selectbox(
@@ -26,11 +29,11 @@ if lang != st.session_state.lang_choice:
     st.session_state.lang_choice = lang
     st.rerun()
 
-# --- قواميس الترجمة (بدون أي ذكر للمناخ) ---
+# --- قواميس الترجمة المحدثة ---
 t = {
     "العربية": {
         "title": "AgriOpuntia 🇩🇿",
-        "subtitle": "المنصة الذكية لتطبيق الهيدروجيل الحيوي وحساب التسميد",
+        "subtitle": "المنصة الذكية لتطبيق الهيدروجيل الحيوي وإدارة المزارع",
         "crops": {
             "olive": "أشجار الزيتون", 
             "palm": "نخيل التمر", 
@@ -46,12 +49,25 @@ t = {
             "sandy_clay": "تربة رملية طينية - Sandy Clay",
             "silty_clay": "تربة غرينية طينية - Silty Clay"
         },
+        "weathers": {
+            "sunny": "☀️ مشمس وحار (موجة حرارة جافة)",
+            "rainy": "🌧️ ممطر (تساقطات معتبرة)",
+            "cloudy": "⛅ غائم جزئياً (رطوبة معتدلة)",
+            "stormy": "⚡ عاصفي (رياح قوية وتقلبات)"
+        },
+        "weather_tips": {
+            "sunny": "⚠️ تنبيه حراري: يُنصح بتفعيل الهيدروجيل بكامل طاقته للحفاظ على رطوبة الجذور، وتجنب السقي في أوقات الذروة.",
+            "rainy": "💡 إرشاد: تم توفير كميات معتبرة من مياه الري بفضل الأمطار، يوصى بمراقبة الصرف لتجنب تشبع التربة بالماء.",
+            "cloudy": "🌱 ملاحظة: الطقس ملائم للعمليات الزراعية الخفيفة والتسميد الورقي لامتصاص مثالي.",
+            "stormy": "🚨 تحذير عاصفي: تأمين شبكات السقي الموضعي وحماية الأشجار الفتية من التيارات الهوائية القوية."
+        },
         "crop_label": "اختر المحصول الزراعي:",
         "soil_label": "نوع التربة (حسب التحليل المخبري):",
+        "weather_label": "حالة الطقس الحالية في الحقل:",
         "area_label": "مساحة الحقل المستهدف (بالمتر المربع م²):",
         "fert_label": "كمية الأسمدة الموصى بها تحليلياً للمتر المربع (كغ/م²):",
         "sidebar_options_header": "أدوات العرض والتحليل",
-        "show_ai": "إظهار التحليل الذكي (AI Insights)",
+        "show_ai": "إظهار لوحة التحليل الذكي",
         "card1_title": "🌵 دور الهيدروجيل الحيوي",
         "card1_text": "<b>• المصدر:</b> مستخلص طبيعي من ألواح صبار التين الشوكي.<br><b>• الوظيفة:</b> شبكة هلامية مجهرية حول الجذور لتحْبِس المياه والأسمدة.",
         "card2_title": "🌿 تخصيص المحصول والتربة",
@@ -61,10 +77,9 @@ t = {
         "m1": "الهيدروجيل المقترح",
         "m2": "إجمالي أسمدة الحقل",
         "m3": "المياه الموفّرة للحقل",
-        "ai_header": "التحليل الذكي وتوصيات الهيدروجيل (AI Insights)",
-        "ai_water": "توفير المياه:",
-        "ai_dose": "الجرعة المقترحة:",
-        "ai_fert": "كفاءة الأسمدة:",
+        "ai_header": "مساعد الذكاء الاصطناعي الفلاحي (Agri-Chat)",
+        "chat_placeholder": "اسأل المساعد عن التسميد، الري، مكافحة الجفاف، أو أي استشارة فلاحية...",
+        "weather_header": "التوجيهات والإرشادات الفورية حسب حالة الطقس",
         "table_header": "الجدول الزمني المقترح لسقي ومتابعة المحصول",
         "table_cols": ["مرحلة نمو المحصول", "تأثير الهيدروجيل الحيوي", "تواتر الري الموصى به"],
         "table_rows": [
@@ -80,7 +95,7 @@ t = {
     },
     "Français": {
         "title": "AgriOpuntia 🇩🇿",
-        "subtitle": "Plateforme intelligente pour le bio-hydrogel et la fertilisation",
+        "subtitle": "Plateforme intelligente pour le bio-hydrogel et la gestion agricole",
         "crops": {
             "olive": "Olivier", 
             "palm": "Palmier dattier", 
@@ -96,12 +111,25 @@ t = {
             "sandy_clay": "Sol sablo-argileux",
             "silty_clay": "Sol limono-argileux"
         },
+        "weathers": {
+            "sunny": "☀️ Ensoleillé et chaud",
+            "rainy": "🌧️ Pluvieux",
+            "cloudy": "⛅ Partiellement nuageux",
+            "stormy": "⚡ Orageux / Vents forts"
+        },
+        "weather_tips": {
+            "sunny": "⚠️ Alerte chaleur : Activez l'hydrogel pour retenir l'humidité des racines, évitez l'arrosage aux heures de pointe.",
+            "rainy": "💡 Conseil : Économie d'eau maximale grâce aux pluies. Surveillez le drainage du sol.",
+            "cloudy": "🌱 Note : Temps idéal pour les travaux légers et la fertilisation foliaire.",
+            "stormy": "🚨 Avertissement : Sécurisez les systèmes d'irrigation et protégez les cultures sensibles."
+        },
         "crop_label": "Sélectionner la culture :",
         "soil_label": "Type de sol :",
+        "weather_label": "Condition météo au champ :",
         "area_label": "Superficie (m²) :",
         "fert_label": "Taux d'engrais (kg/m²) :",
         "sidebar_options_header": "Options d'affichage",
-        "show_ai": "Afficher Insights IA",
+        "show_ai": "Afficher le module IA",
         "card1_title": "🌵 Rôle du Bio-Hydrogel",
         "card1_text": "<b>• Source:</b> Extrait naturel de figuier de barbarie.<br><b>• Fonction:</b> Rétention d'eau et d'nutriments autour des racines.",
         "card2_title": "🌿 Culture & Sol",
@@ -111,10 +139,9 @@ t = {
         "m1": "Hydrogel suggéré",
         "m2": "Engrais total",
         "m3": "Eau économisée",
-        "ai_header": "Recommandations Intelligentes (AI Insights)",
-        "ai_water": "Économie d'eau :",
-        "ai_dose": "Dose suggérée :",
-        "ai_fert": "Efficacité des engrais :",
+        "ai_header": "Assistant IA Agricole (Agri-Chat)",
+        "chat_placeholder": "Posez vos questions sur l'irrigation, la fertilisation, ou la gestion des sols...",
+        "weather_header": "Recommandations Météo en Temps Réel",
         "table_header": "Calendrier d'irrigation et de suivi",
         "table_cols": ["Phase de culture", "Effet du Bio-Hydrogel", "Fréquence d'irrigation"],
         "table_rows": [
@@ -130,7 +157,7 @@ t = {
     },
     "English": {
         "title": "AgriOpuntia 🇩🇿",
-        "subtitle": "Smart Platform for Bio-Hydrogel & Fertilization",
+        "subtitle": "Smart Platform for Bio-Hydrogel & Farm Management",
         "crops": {
             "olive": "Olive Trees", 
             "palm": "Date Palm Trees", 
@@ -146,12 +173,25 @@ t = {
             "sandy_clay": "Sandy Clay Loam",
             "silty_clay": "Silty Clay Loam"
         },
+        "weathers": {
+            "sunny": "☀️ Sunny & Hot",
+            "rainy": "🌧️ Rainy",
+            "cloudy": "⛅ Partly Cloudy",
+            "stormy": "⚡ Stormy / High Winds"
+        },
+        "weather_tips": {
+            "sunny": "⚠️ Heat Alert: Maximize bio-hydrogel efficiency to preserve root moisture, avoid peak-hour watering.",
+            "rainy": "💡 Tip: Significant irrigation water saved via rainfall. Monitor soil drainage.",
+            "cloudy": "🌱 Note: Favorable weather for light farming tasks and foliar feeding.",
+            "stormy": "🚨 Storm Warning: Secure irrigation systems and protect young crops from strong winds."
+        },
         "crop_label": "Select Crop Type:",
         "soil_label": "Soil Type:",
+        "weather_label": "Field Weather Condition:",
         "area_label": "Target Area (m²):",
         "fert_label": "Recommended fertilizer (kg/m²):",
         "sidebar_options_header": "Display Options",
-        "show_ai": "Show AI Insights",
+        "show_ai": "Show AI Module",
         "card1_title": "🌵 Bio-Hydrogel Role",
         "card1_text": "<b>• Source:</b> Natural extract from Opuntia pads.<br><b>• Function:</b> Retains water and nutrients around roots.",
         "card2_title": "🌿 Crop & Soil",
@@ -161,10 +201,9 @@ t = {
         "m1": "Suggested Hydrogel",
         "m2": "Total Fertilizer",
         "m3": "Saved Water",
-        "ai_header": "AI Smart Recommendations",
-        "ai_water": "Water Savings:",
-        "ai_dose": "Recommended Dose:",
-        "ai_fert": "Fertilizer Efficiency:",
+        "ai_header": "Agricultural AI Assistant (Agri-Chat)",
+        "chat_placeholder": "Ask the assistant about irrigation, fertilization, or soil management...",
+        "weather_header": "Real-Time Weather Recommendations",
         "table_header": "Proposed Irrigation & Monitoring Schedule",
         "table_cols": ["Crop Growth Stage", "Bio-Hydrogel Effect", "Recommended Irrigation"],
         "table_rows": [
@@ -182,37 +221,40 @@ t = {
 
 lang_data = t[lang]
 
-# --- تنسيق CSS الثابت ---
+# --- تنسيق CSS المريح للأعين (Eye-Friendly Palette & Modern UI) ---
 st.markdown(f"""
 <style>
+    .stApp {{
+        background-color: #f7f9f6;
+    }}
     .main-header {{
-        background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 50%, #558b2f 100%);
-        padding: 22px;
+        background: linear-gradient(135deg, #1b4d3e 0%, #2e6f40 100%);
+        padding: 24px;
         border-radius: 16px;
-        color: white;
+        color: #ffffff;
         text-align: center;
         margin-bottom: 25px;
-        box-shadow: 0 6px 20px rgba(27, 77, 62, 0.15);
+        box-shadow: 0 4px 15px rgba(27, 77, 62, 0.12);
         border-bottom: 4px solid #d4a373;
     }}
     .main-header h1 {{
-        color: white !important;
-        font-size: 2.3rem;
+        color: #ffffff !important;
+        font-size: 2.2rem;
         margin-bottom: 5px;
         font-weight: 700;
     }}
     .main-header p {{
-        color: #f4f1ea !important;
+        color: #e2ede4 !important;
         font-size: 0.95rem;
         margin: 0;
     }}
     .feature-card {{
         background-color: #ffffff;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #d8e2dc;
         border-radius: 12px;
         padding: 18px;
-        height: 210px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        height: 220px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         direction: {lang_data['dir']};
         text-align: {lang_data['align']};
         display: flex;
@@ -224,35 +266,28 @@ st.markdown(f"""
         font-size: 1.05rem;
         margin-bottom: 10px;
         font-weight: 700;
-        border-bottom: 2px solid #f0f0f0;
+        border-bottom: 2px solid #f0f4f1;
         padding-bottom: 6px;
     }}
     .feature-card p {{
-        color: #333333;
+        color: #2f3e46;
         font-size: 0.88rem;
         line-height: 1.6;
         margin: 0;
     }}
-    .custom-box {{
-        background-color: #e8f4f8;
-        border-inline-start: 5px solid #1b4d3e;
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+    .weather-box {{
+        background-color: #eef5f1;
+        border-inline-start: 6px solid #2e6f40;
+        padding: 18px;
+        border-radius: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
         direction: {lang_data['dir']};
         text-align: {lang_data['align']};
+        color: #1b4d3e;
+        font-weight: 600;
         box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }}
-    .custom-box ul {{
-        margin: 0;
-        padding-inline-start: 20px;
-    }}
-    .custom-box li {{
-        margin-bottom: 8px;
-        color: #2c3e50;
-        font-size: 0.95rem;
-        unicode-bidi: plaintext;
+        font-size: 1.05rem;
     }}
     .custom-table {{
         width: 100%;
@@ -262,7 +297,7 @@ st.markdown(f"""
         background-color: #ffffff;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.04);
         direction: {lang_data['dir']};
         text-align: {lang_data['align']};
     }}
@@ -274,17 +309,17 @@ st.markdown(f"""
     }}
     .custom-table td {{
         padding: 12px 15px;
-        border-bottom: 1px solid #e0e0e0;
-        color: #333333;
+        border-bottom: 1px solid #e9ecef;
+        color: #2f3e46;
         font-size: 0.95rem;
     }}
     .custom-table tr:hover {{
-        background-color: #f7f4ee;
+        background-color: #f2f7f4;
     }}
 </style>
 """, unsafe_allow_html=True)
 
-# --- الواجهة الرئيسية (Main Header) ---
+# --- الهيدر الرئيسي ---
 st.markdown(f"""
 <div class="main-header">
     <h1>{lang_data['title']}</h1>
@@ -292,7 +327,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- مدخلات القائمة الجانبية (بمفاتيح ثابتة ومستقرة تماماً بدون مناخ) ---
+# --- مدخلات القائمة الجانبية (بمفاتيح آمنة ومستقرة) ---
 crop_key = st.sidebar.selectbox(
     lang_data['crop_label'], 
     options=list(lang_data['crops'].keys()), 
@@ -308,6 +343,14 @@ soil_key = st.sidebar.selectbox(
     key="selected_soil_key"
 )
 soil_type = lang_data['soils'][soil_key]
+
+weather_key = st.sidebar.selectbox(
+    lang_data['weather_label'], 
+    options=list(lang_data['weathers'].keys()), 
+    format_func=lambda x: lang_data['weathers'][x],
+    key="selected_weather_key"
+)
+current_weather_tip = lang_data['weather_tips'][weather_key]
 
 st.sidebar.markdown("---")
 area = st.sidebar.number_input(
@@ -330,9 +373,9 @@ fertilizer_rate = st.sidebar.number_input(
 # --- خيارات العرض والتحليل في القائمة الجانبية ---
 st.sidebar.markdown("---")
 st.sidebar.markdown(f"**{lang_data['sidebar_options_header']}**")
-show_ai_insights = st.sidebar.checkbox(lang_data['show_ai'], value=True, key="chk_ai_insights")
+show_ai_module = st.sidebar.checkbox(lang_data['show_ai'], value=True, key="chk_ai_module")
 
-# --- الحسابات العلمية الدقيقة ---
+# --- الحسابات العلمية والدقيقة ---
 hydrogel_needed_kg = area * 0.12 
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
@@ -380,19 +423,42 @@ mcol1.metric(lang_data['m1'], f"{hydrogel_needed_kg:,.1f} kg" if lang != "الع
 mcol2.metric(lang_data['m2'], f"{total_crop_fertilizer_kg:,.1f} kg" if lang != "العربية" else f"{total_crop_fertilizer_kg:,.1f} كغ")
 mcol3.metric(lang_data['m3'], f"{water_saved_m3:,.1f} m³")
 
-# --- التحليل الذكي ---
-if show_ai_insights:
+# --- التوجيهات الفورية حسب الطقس ---
+st.markdown("---")
+st.subheader(f"🌤️ {lang_data['weather_header']}")
+st.markdown(f"""
+<div class="weather-box">
+    {current_weather_tip}
+</div>
+""", unsafe_allow_html=True)
+
+# --- مساعد الذكاء الاصطناعي الفلاحي التفاعلي (Agri-Chat) ---
+if show_ai_module:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
-    st.markdown(f"""
-    <div class="custom-box">
-        <ul>
-            <li>💧 <b>{lang_data['ai_water']}</b> <span dir="ltr">35% - 45%</span></li>
-            <li>🧪 <b>{lang_data['ai_dose']}</b> <span dir="ltr">{hydrogel_needed_kg:,.1f} kg</span></li>
-            <li>🌱 <b>{lang_data['ai_fert']}</b> <span dir="ltr">{total_crop_fertilizer_kg:,.1f} kg</span></li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
+    
+    # عرض سجل المحادثات
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # إدخال محادثة جديدة من المستخدم
+    if user_prompt := st.chat_input(lang_data['chat_placeholder']):
+        st.session_state.messages.append({"role": "user", "content": user_prompt})
+        with st.chat_message("user"):
+            st.markdown(user_prompt)
+
+        # استجابة الذكاء الاصطناعي المتخصصة قطاعياً
+        with st.chat_message("assistant"):
+            if any(word in user_prompt.lower() for word in ["هيدروجيل", "hydrogel", "صبار", "opuntia", "ماء", "سقي", "رطوبة"]):
+                ai_reply = f"بخصوص استفسارك حول النشاط الفلاحي لـ **{crop_type}**، استخدام الهيدروجيل الحيوي المستخلص من صبار التين الشوكي في تربة مثل **{soil_type}** يساعد في خفض الاحتياجات المائية بحوالي 35-45%، مع الحفاظ على كفاءة امتصاص الأسمدة المحسوبة بـ **{total_crop_fertilizer_kg:,.1f} كغ**."
+            elif any(word in user_prompt.lower() for word in ["سماد", "fertilizer", "تسميد", "أسمدة"]):
+                ai_reply = f"كمية الأسمدة الموصى بها لمساحة **{area:,.0f} م²** الخاصة بـ **{crop_type}** تقدر بـ **{total_crop_fertilizer_kg:,.1f} كغ**. يُنصح دائماً بتوزيعها على دفعات لزيادة الكفاءة."
+            else:
+                ai_reply = f"أهلاً بكِ. بصفتي مساعدك الذكي في منصة **AgriOpuntia**، أنا هنا لمساعدتك في كل ما يتعلق بإدارة زراعة **{crop_type}**، تحسين مقاومة الجفاف، وتسيير الحقول بكفاءة عالية. تفطلي بطرح سؤالك الزراعي المحدد!"
+            
+            st.markdown(ai_reply)
+            st.session_state.messages.append({"role": "assistant", "content": ai_reply})
 
 # --- جدول المتابعة ---
 st.markdown("---")
@@ -416,13 +482,8 @@ st.markdown(f"""
 # --- التقرير والتحميل ---
 st.markdown("---")
 st.subheader(f"📑 {lang_data['report_header']}")
-report_content = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg\nFertilizer: {total_crop_fertilizer_kg:.1f} kg"
-st.download_button(
-    label=lang_data['download_btn'],
-    data=report_content,
-    file_name="AgriOpuntia_Report.txt",
-    mime="text/plain"
-)
+report_content = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg\nFertilizer: {total_crop_f
+
 
 
 
