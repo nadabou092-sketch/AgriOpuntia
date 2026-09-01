@@ -379,23 +379,23 @@ hydrogel_needed_kg = area * 0.12
 water_saved_m3 = area * 0.22 
 total_crop_fertilizer_kg = area * fertilizer_rate 
 
-# --- إضافة تنسيق CSS لتعديل طول الإطارات لتكون متساوية ---
+# --- تنسيق CSS لتثبيت طول الإطارات ---
 st.markdown("""
     <style>
-    .streamlit-expanderHeader {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
     div[data-testid="stExpander"] {
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         background-color: #fafbfc;
-        min-height: 130px;
+        height: 70px;
+        overflow: hidden;
+    }
+    div[data-testid="stExpander"][aria-expanded="true"] {
+        height: auto;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# --- عرض البطاقات الإحصائية التفاعلية المتساوية ---
+# --- عرض البطاقات الإحصائية التفاعلية ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
