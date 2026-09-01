@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- تنسيق CSS مخصص للواجهة والجدول ---
+# --- تنسيق CSS مخصص لتطابق أطوال البطاقات وتنظيم المحتوى ---
 st.markdown("""
 <style>
     .main-header {
@@ -30,6 +30,46 @@ st.markdown("""
     .main-header p {
         color: #f4f1ea !important;
         font-size: 0.95rem;
+        margin: 0;
+    }
+    .feature-card {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 18px;
+        height: 210px; /* توحيد الطول والارتفاع لكل البطاقات بدقة */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        direction: rtl;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .feature-card-en {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 18px;
+        height: 210px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        direction: ltr;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .feature-card h4, .feature-card-en h4 {
+        color: #1b4d3e;
+        font-size: 1.05rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 6px;
+    }
+    .feature-card p, .feature-card-en p {
+        color: #333333;
+        font-size: 0.88rem;
+        line-height: 1.6;
         margin: 0;
     }
     .custom-table {
@@ -122,39 +162,36 @@ if lang == "العربية":
     water_saved_m3 = area * 0.22 
     total_crop_fertilizer_kg = area * fertilizer_rate 
 
-    # بطاقات التعريف المعرفية
+    # بطاقات متساوية الطول والارتفاع ومنظمة بدقة
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.info("🌵 دور الهيدروجيل الحيوي")
-        with st.expander("تفاصيل التقنية"):
-            st.markdown("""
-            <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• المصدر الطبيعي:</b> مستخلص من ألواح صبار التين الشوكي (Opuntia ficus-indica)<br>
-            <b>• الوظيفة الحقلية:</b> تشكيل شبكة هلامية مجهرية حول جذور النبات لتحْبِس مياه الري والأسمدة وتمنع ترشيحها عميقاً.
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="feature-card">
+            <h4>🌵 دور الهيدروجيل الحيوي</h4>
+            <p><b>• المصدر:</b> مستخلص طبيعي من ألواح صبار التين الشوكي.<br>
+            <b>• الوظيفة:</b> تشكيل شبكة هلامية مجهرية حول الجذور لتحْبِس المياه والأسمدة وتمنع ترشيحها.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
     with col2:
-        st.info(f"🌿 تخصيص المحصول")
-        with st.expander("تفاصيل الاحتياجات"):
-            st.markdown(f"""
-            <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• المحصول المدروس:</b> {crop_type}<br>
-            <b>• طبيعة التربة:</b> {soil_type}<br>
-            <b>• التسميد المحسوب:</b> يحتاج الحقل إجمالاً إلى <b>{total_crop_fertilizer_kg:,.1f} كغ</b> ({total_crop_fertilizer_kg/100:,.2f} قنطار) من الأسمدة.
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="feature-card">
+            <h4>🌿 تخصيص المحصول والتربة</h4>
+            <p><b>• المحصول:</b> {crop_type}<br>
+            <b>• التربة:</b> {soil_type}<br>
+            <b>• الأسمدة الكلية:</b> <b>{total_crop_fertilizer_kg:,.1f} كغ</b> ({total_crop_fertilizer_kg/100:,.2f} قنطار).</p>
+        </div>
+        """, unsafe_allow_html=True)
         
     with col3:
-        st.info("💧 كفاءة الري والتوفير")
-        with st.expander("أثر توفير المياه"):
-            st.markdown("""
-            <div dir="rtl" style="text-align: right; line-height: 1.8;">
-            <b>• نسبة توفير المياه:</b> تقليص عدد مرات السقي بنسبة تصل إلى 40%<br>
-            <b>• مقاومة الجفاف:</b> حماية المحاصيل من صدمات الإجهاد المائي.
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="feature-card">
+            <h4>💧 كفاءة الري والتوفير</h4>
+            <p><b>• توفير المياه:</b> تقليص عدد مرات السقي بنسبة تصل إلى 40%.<br>
+            <b>• مقاومة الجفاف:</b> حماية المحاصيل بكفاءة عالية من صدمات الإجهاد المائي.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
     st.markdown(f"""
@@ -326,6 +363,7 @@ else:
 
     report_content = f"AgriOpuntia Report\nCrop: {crop_type}\nArea: {area} m²\nHydrogel: {hydrogel_needed_kg:.1f} kg"
     st.download_button("📥 Download Technical Report", report_content, file_name="report.txt", mime="text/plain")
+
 
 
 
