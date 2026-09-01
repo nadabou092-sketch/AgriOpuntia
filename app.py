@@ -395,14 +395,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- عرض البطاقات الإحصائية التفاعلية ---
+# --- عرض البطاقات الإحصائية التفاعلية (Expanders) ---
 col1, col2, col3 = st.columns(3)
 
 with col1:
     with st.expander(f"🌵 {lang_data.get('card1_title', 'Rôle du Bio-Hydrogel')}", expanded=False):
         st.markdown(f"""
         - **Source:** Extrait naturel de figuier de barbarie.
-        - **Fonction:** Rétention d'eau et de nutriments.
+        - **Fonction:** Rétention d'eau et de nutriments autour des racines.
         """)
 
 with col2:
@@ -419,7 +419,6 @@ with col3:
         - **Économie d'eau:** Réduction jusqu'à 40%.
         - **Résistance:** Protection contre le stress hydrique.
         """)
-
 # --- 10. لوحة المؤشرات (Metrics Dashboard) ---
 st.markdown("---")
 st.markdown(f'<h2 style="direction: {lang_data["dir"]}; text-align: {lang_data["align"]}; color: #1b4d3e;">📊 {lang_data["dashboard_title"]}: {crop_type}</h2>', unsafe_allow_html=True)
