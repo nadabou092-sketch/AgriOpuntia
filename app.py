@@ -16,7 +16,7 @@ lang = st.sidebar.selectbox(
     key="language_selector"
 )
 
-# --- قواميس الترجمة والمفاتيح الثابتة (نصوص نظيفة لكل لغة لتجنب تداخل الحروف) ---
+# --- قواميس الترجمة والمفاتيح الثابتة ---
 t = {
     "العربية": {
         "title": "AgriOpuntia 🇩🇿",
@@ -118,9 +118,9 @@ t = {
         "m2": "Engrais total",
         "m3": "Eau économisée",
         "ai_header": "Recommandations Intelligentes (AI Insights)",
-        "ai_water": "Économie d'eau:",
-        "ai_dose": "Dose suggérée:",
-        "ai_fert": "Efficacité des engrais:",
+        "ai_water": "Économie d'eau :",
+        "ai_dose": "Dose suggérée :",
+        "ai_fert": "Efficacité des engrais :",
         "climate_header": "Recommandations Climatiques",
         "climate_success": "Adaptations climatiques appliquées avec succès à vos paramètres régionaux.",
         "table_header": "Calendrier d'irrigation et de suivi",
@@ -250,6 +250,26 @@ st.markdown(f"""
         line-height: 1.6;
         margin: 0;
     }}
+    .custom-box {{
+        background-color: #e8f4f8;
+        border-left: 5px solid #1b4d3e;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        direction: {lang_data['dir']};
+        text-align: {lang_data['align']};
+        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }}
+    .custom-box ul {{
+        margin: 0;
+        padding-inline-start: 20px;
+    }}
+    .custom-box li {{
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }}
     .custom-table {{
         width: 100%;
         border-collapse: collapse;
@@ -371,15 +391,19 @@ mcol1.metric(lang_data['m1'], f"{hydrogel_needed_kg:,.1f} kg" if lang != "الع
 mcol2.metric(lang_data['m2'], f"{total_crop_fertilizer_kg:,.1f} kg" if lang != "العربية" else f"{total_crop_fertilizer_kg:,.1f} كغ")
 mcol3.metric(lang_data['m3'], f"{water_saved_m3:,.1f} m³")
 
-# --- التحليل الذكي حسب التفعيل (تم تصحيح النصوص لتكون بلغة واحدة نظيفة) ---
+# --- التحليل الذكي (تم تنظيم الـ HTML بنظام اتجاه دقيق حسب اللغة) ---
 if show_ai_insights:
     st.markdown("---")
     st.subheader(f"🤖 {lang_data['ai_header']}")
-    st.info(f"""
-    * 💧 **{lang_data['ai_water']}** 35% - 45%
-    * 🧪 **{lang_data['ai_dose']}** **{hydrogel_needed_kg:,.1f} kg**
-    * 🌱 **{lang_data['ai_fert']}** {total_crop_fertilizer_kg:,.1f} kg
-    """)
+    st.markdown(f"""
+    <div class="custom-box">
+        <ul>
+            <li>💧 <b>{lang_data['ai_water']}</b> 35% - 45%</li>
+            <li>🧪 <b>{lang_data['ai_dose']}</b> {hydrogel_needed_kg:,.1f} kg</li>
+            <li>🌱 <b>{lang_data['ai_fert']}</b> {total_crop_fertilizer_kg:,.1f} kg</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 if show_climate_recs:
     st.markdown("---")
@@ -413,8 +437,8 @@ st.download_button(
     label=lang_data['download_btn'],
     data=report_content,
     file_name="AgriOpuntia_Report.txt",
-    mime="text/plain"
-)
+    mime="text/plain")
+
 
 
 
