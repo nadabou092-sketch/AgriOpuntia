@@ -482,12 +482,14 @@ st.markdown(f"""
 # --- التقرير والتحميل ---
 st.markdown("---")
 st.subheader(f"📑 {lang_data['report_header']}")
+
 report_content = (
     f"AgriOpuntia Technical Report\n"
     f"Crop: {crop_type}\n"
     f"Soil: {soil_type}\n"
     f"Area: {area} m²\n"
-    f"Hydrogel: {hydrogel_needed}"
+    f"Hydrogel: {hydrogel_neede}"
+
 
 
 
