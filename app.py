@@ -483,17 +483,17 @@ st.markdown(f"""
 st.markdown("---")
 st.subheader("📄 التقرير الفني وتحميل التقرير")
 
-part1 = f"AgriOpuntia Technical Report\nCrop: {crop_type}\nSoil: {soil_type}"
-line1 = "AgriOpuntia Technical Report"
-line2 = f"Crop: {crop_type} | Soil: {soil_type}"
-line3 = f"Area: {area} m2 | Fertilizer: {fertilizer:.1f} kg"
-report_content = line1 + "\n" + line2 + "\n" + line3
+calc_fert = (area / 10000) * 1333.3
+report_content = f"AgriOpuntia DZ Report\nCulture: {crop_type}\nSol: {soil_type}\nSurface: {area} m2\nEngrais: {calc_fert:.1f} kg"
+
+st.text_area("محتوى التقرير:", report_content, height=150)
 st.download_button(
     label="📥 تحميل التقرير (TXT)",
     data=report_content,
     file_name="AgriOpuntia_Report.txt",
     mime="text/plain"
 )
+
 
 
 
